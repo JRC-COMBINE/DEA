@@ -1,0 +1,62 @@
+<!doctype html>
+<!--suppress HtmlUnknownTarget -->
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+        crossorigin="anonymous">
+
+    <title>Diagnostic Expert Advisor</title>
+</head>
+
+<body>
+    {% include "nav.html" %}
+    <div class="bg-light p-5 rounded-lg m-3">
+        <form method="post" action="set_filters">
+            <div class="btn-group" role="group" ></div>
+                <div class="container-fluid">
+                    <div class="row mx-auto">
+                        <div class="col">
+                            <h2>Filters:</h2>
+                        </div>
+                        {% for f in FILTERS%}
+                        <div class="col-1">
+                            <input type="checkbox" class="btn-check btn-fill" id="{{f}}" name="{{f}}" {% if 'ards_label_available' is in filters %} checked {%endif%} autocomplete="off">
+                            <label class="btn btn-outline-primary" for="{{f}}">{{f}}</label>
+                        </div>
+                        {% endfor %}
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-success">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div id="encounters" class="list-group">
+            {% for e in DATALOADER.processed %}
+            <a href="/encounter/{{e.id}}" class="list-group-item list-group-item-action" aria-current="true">
+                <div class="d-flex justify-content-between">
+                <h5 class="mb-1">Encounter {{e.id}}</h5>
+                <small>
+                    <span class="badge bg-primary">{{e.dynamic.index[-1].days}} days {% if e.dynamic.index[-1].seconds//3600 != 0 %} {{e.dynamic.index[-1].seconds//3600}} hours{% endif %}</span>
+                    <span class="badge bg-secondary"> Horovitz Range: {{e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].min()|int}} - {{e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].max()|int}}</span>
+                    <span class="badge bg-warning"> Horovitz Unique: {{e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].unique()|length}}</span>
+                </small>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous">
+    </script>
+</body>
+
+</html>

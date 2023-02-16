@@ -1,0 +1,82 @@
+<!doctype html>
+<!--suppress HtmlUnknownTarget -->
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <title>Diagnostic Expert Advisor</title>
+</head>
+
+<body>
+    {% include "nav.html" %}
+    <div class="bg-light p-5 rounded-lg m-3">
+        <h1 class="display-4">Cohort Overview </h1>
+        <h4>
+            {% if DATALOADER.processed|length %}<span class="badge bg-success">Processed</span>{% endif %}
+            {% if DATALOADER.states|length %}<span class="badge bg-primary">States Calculated</span>{% endif %}
+        </h4>
+        <div class="row">
+            <div class="col-8">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Source File :</th>
+                            <td>{{COHORT}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Limit Size:</th>
+                            <td>{{DATALOADER.limit_size}}</td>
+                        </tr>
+                        {% if DATALOADER.required_los is not none %}
+                        <tr>
+                            <th scope="row">Required LOS:</th>
+                            <td>{{DATALOADER.required_los}}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <th scope="row">Source</th>
+                            <td>{{DATALOADER.source}}</td>
+                        </tr>
+                        {% if DATALOADER.filter_hospitals is not none %}
+                        <tr>
+                            <th scope="row">Hospital Filter:</th>
+                            <td>{{DATALOADER.filter_hospitals}}</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col">
+                <div class="d-grid gap-2 ">
+                    <a href="/process" class="btn {% if DATALOADER.processed|length %} btn-outline-success {% else %} btn-success {% endif %}">Process</a>
+                    <a href="/calculate_states" class="btn {% if DATALOADER.states|length %} btn-outline-primary {% else %} btn-primary {% endif %}">Calculate States</a>
+                    <a href="/encounter_list" class="btn btn-info">Show Encounters</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                A total of <b>{{DATALOADER.processed|length}}</b> encounters were recorded. </br>
+                The median Length of Stay (LOS) was <b>{{LOS}}</b>.
+            </div>
+            <div class="col">
+                {{ los_plot|safe }}
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous">
+        </script>
+</body>
+
+</html>
