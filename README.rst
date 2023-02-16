@@ -1,9 +1,12 @@
 Diagnostic Expert Advisor
 =========================
 
-.. image:: https://img.shields.io/github/pipenv/locked/python-version/jrc-combine/dea?style=for-the-badge
+.. image:: https://img.shields.io/badge/python-v3.10.9-blue?style=for-the-badge&logo=python
+    :width: 33%
 .. image:: https://img.shields.io/readthedocs/diagnostic-expert-advisor?style=for-the-badge
+    :width: 33%
 .. image:: https://img.shields.io/github/license/jrc-combine/dea?style=for-the-badge
+    :width: 33%
 
 The **D**iagnostric **E**xpert **A**dvisor is a lightweight toolkit to enable medical researches to quickly get started with their work.  
 It is based on [Flask](https://github.com/pallets/flask) and written purely in Python.  
@@ -15,20 +18,21 @@ Installing
 
 Clone the repository, setup the environment and start hacking away:
 .. code-block:: text
-    $ git clone git@github.com:JRC-COMBINE/DEA.git
-    $ cd DEA
-    $ conda create --name dea --file requirements.txt
-    $ conda activate dea
-    $ flask run
+    $ git clone git@github.com:JRC-COMBINE/DEA.git  
+    $ cd DEA  
+    $ conda create --name dea --file requirements.txt  
+    $ conda activate dea  
+    $ flask run  
 ..
 
 Where do I start?
 -----------------
 
 First you want to create DataLoaders from your data sources. An example script can be found in `dea/data_generation_example.py` and adapted accordingly. The cohorts created this way are the basis for all further analysis. You can always change the cohort you are working on in the DEA. Examples for customization include:
-- Cohort-level analysis can be integrated into `overview.html` and the `overview` function in `dea/app.py` respectively
-- Per-Patient level analysis can be integrated into `encounter.html` and the `encounter` function in `dea/app.py` respectively
-- Filters can be added to `encounter_list` in `dea/app.py`
+
+* Cohort-level analysis can be integrated into `overview.html` and the `overview` function in `dea/app.py` respectively
+* Per-Patient level analysis can be integrated into `encounter.html` and the `encounter` function in `dea/app.py` respectively
+* Filters can be added to `encounter_list` in `dea/app.py`
 
 Contributing
 ------------
