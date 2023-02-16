@@ -27,7 +27,7 @@ By default the port used is `5000`. The port needs to be tunneled through the cl
 Use conda to create a virtual environment with all requirements.  
 Development was testen on Python 3.10, but all versions should work.  
 
-`conda create --name dea python=3.10`
+`conda create --name dea --file requirements.tx`
 
 Requirements are listed in `requirements.txt`, most notably:  
 
