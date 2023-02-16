@@ -1,5 +1,6 @@
-# DEA
-Diagnostic Expert Advisor: A framework for end-to-end ICU research
+# **D**iagnostic **E**xpert **A**dvisor: A framework for end-to-end ICU research
+
+![](https://raw.githubusercontent.com/JRC-COMBINE/DEA/2cb2fa289e91d9aceae809ac30f624f8cb7968c1/img/cohort_overview.png)
 
 ### Input Data Format
 
