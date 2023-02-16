@@ -18,7 +18,8 @@ Installing
 
 Clone the repository, setup the environment and start hacking away:
 
-.. code-block::
+.. code:: bash
+   
    $ git clone git@github.com:JRC-COMBINE/DEA.git
    $ cd DEA
    $ conda create --name dea --file requirements.txt
