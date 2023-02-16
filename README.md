@@ -1,3 +1,4 @@
+![GitHub Pipenv locked Python version](https://img.shields.io/github/pipenv/locked/python-version/jrc-combine/dea?style=for-the-badge) ![Read the Docs](https://img.shields.io/readthedocs/diagnostic-expert-advisor?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/jrc-combine/dea?style=for-the-badge)
 # Diagnostic Expert Advisor
 The **D**iagnostric **E**xpert **A**dvisor is a lightweight toolkit to enable medical researches to quickly get started with their work.  
 It is based on [Flask](https://github.com/pallets/flask) and written purely in Python.  
