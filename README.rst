@@ -1,12 +1,14 @@
 Diagnostic Expert Advisor
 =========================
 
-![GitHub Pipenv locked Python version](https://img.shields.io/github/pipenv/locked/python-version/jrc-combine/dea?style=for-the-badge) ![Read the Docs](https://img.shields.io/readthedocs/diagnostic-expert-advisor?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/jrc-combine/dea?style=for-the-badge)
+.. image:: https://img.shields.io/github/pipenv/locked/python-version/jrc-combine/dea?style=for-the-badge
+.. image:: https://img.shields.io/readthedocs/diagnostic-expert-advisor?style=for-the-badge
+.. image:: https://img.shields.io/github/license/jrc-combine/dea?style=for-the-badge
 
 The **D**iagnostric **E**xpert **A**dvisor is a lightweight toolkit to enable medical researches to quickly get started with their work.  
 It is based on [Flask](https://github.com/pallets/flask) and written purely in Python.  
 
-![](https://raw.githubusercontent.com/JRC-COMBINE/DEA/2cb2fa289e91d9aceae809ac30f624f8cb7968c1/img/cohort_overview.png)
+.. image:: https://raw.githubusercontent.com/JRC-COMBINE/DEA/2cb2fa289e91d9aceae809ac30f624f8cb7968c1/img/cohort_overview.png
 
 Installing
 ----------
