@@ -1,4 +1,6 @@
-# **D**iagnostic **E**xpert **A**dvisor: A framework for end-to-end ICU research
+# Diagnostic Expert Advisor
+The **D**iagnostric **E**xpert **A**dvisor is a lightweight toolkit to enable medical researches to quickly get started with their work.  
+It is based on [Flask](https://github.com/pallets/flask) and written purely in Python.  
 
 ![](https://raw.githubusercontent.com/JRC-COMBINE/DEA/2cb2fa289e91d9aceae809ac30f624f8cb7968c1/img/cohort_overview.png)
 
