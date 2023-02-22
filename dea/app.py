@@ -149,4 +149,7 @@ def route_encounter(id):
     
     plots = [p_html_str]
 
-    return render_template("encounter.html", e=e, plots=plots)
+    import pygwalker as pyg
+    pygplot = pyg.walk(e.dynamic, return_html=True)
+
+    return render_template("encounter.html", e=e, plots=plots, pygplot=pygplot)
