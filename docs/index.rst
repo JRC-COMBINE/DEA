@@ -1,8 +1,3 @@
-.. Diagnostic Expert Advisor documentation master file, created by
-   sphinx-quickstart on Thu Feb 16 15:57:58 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to Diagnostic Expert Advisor's documentation!
 =====================================================
 
@@ -10,6 +5,12 @@ Welcome to Diagnostic Expert Advisor's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   source/usage
+   source/modules
+
+.. note::
+
+   This project is under active development.
 
 
 Indices and tables

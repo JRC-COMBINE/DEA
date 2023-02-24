@@ -3,6 +3,7 @@
 
 from time import sleep
 
+import os
 import joblib
 from pathlib import Path
 import numpy as np
@@ -25,7 +26,7 @@ app.config.from_mapping(
     SECRET_KEY='dev'
 )
 app.logger.info("Scanning for available cohorts...")
-available_cohorts = [str(c) for c in Path("data").iterdir() if c.suffix == ".joblib"]
+available_cohorts = [str(c) for c in Path(os.path.dirname(__file__)+"/data").iterdir() if c.suffix == ".joblib"]
 app.logger.info("Found the following cohorts:")
 for c in available_cohorts:
     app.logger.info(f" - {c}")
