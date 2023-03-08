@@ -27,9 +27,7 @@ extensions = [
     'sphinx.ext.napoleon',
 ]
 
-napoleon_google_docstring = False
-napoleon_use_param = False
-napoleon_use_ivar = True
+napoleon_google_docstring = True
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']

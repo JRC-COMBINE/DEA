@@ -34,10 +34,27 @@ for c in available_cohorts:
 
 @app.route('/')
 def index():
+    """Flask Route for "/".
+    
+    Entrypoint for the webserver. Lists all available Cohorts as defined in app.py.  
+    Renders a cohort-selection screen. 
+    
+    Returns:
+        Renders the index.html template
+    """
     return render_template("index.html", available_cohorts=available_cohorts)
 
 @app.route('/set_cohort', methods=['POST'])
 def set_cohort():
+    """Flask Route for "/set_cohort".
+    
+    Run when a cohort is selected either on the starting page, or later on through the menu.  
+    
+    Internally changes the COHORT and loads the relevant data into DATALOADER.
+    
+    Returns:
+        Redirects to /overview
+    """
     global COHORT, DATALOADER
     COHORT = request.form["cohort"]
     app.logger.info(f"Set cohort to {COHORT}")
@@ -46,6 +63,13 @@ def set_cohort():
 
 @app.route('/search', methods=['POST'])
 def search():
+    """Flask Route for "/search".
+    
+    Used to quickly navigate to individual encounters.
+    
+    Returns:
+        Redirects to the searched encounter if available, or to the /overview page if an error occurs.
+    """
     query = request.form["query"]
     app.logger.info(f"Searching for {query} ...")
     try:
@@ -70,6 +94,13 @@ def process():
 
 @app.route('/calculate_states')
 def calculate_states():
+    """Flask Route for "/calculate_states".
+    
+    Runs the create_states method on all encounters in the dataloader.
+    
+    Returns:
+        Redirects to /overview once complete.
+    """
     if COHORT is None:
         return redirect(url_for("index"))
     app.logger.info(f"Calculating states for cohort {COHORT}")
@@ -112,6 +143,17 @@ def plot_cohort_hist():
 
 @app.route('/overview')
 def overview():
+    """Flask Route for "/overview".
+    
+    *Redirects to the index page for cohort selection if no cohort is currently selected.*
+
+    Otherwise renders the cohort overview.
+
+    **You can add custom plots for the cohort.**
+    
+    Returns:
+        Renders the overview.html template
+    """
     if COHORT is None:
         return redirect(url_for("index"))
     app.logger.info(f"Rendering overview for cohort {COHORT}")
@@ -122,6 +164,17 @@ def overview():
 
 @app.route('/encounter_list')
 def encounter_list():
+    """Flask Route for "/encounter_list".
+    
+    *Redirects to the index page for cohort selection if no cohort is currently selected.*
+
+    Otherwise shows a list of encounters in the current cohort.  
+
+    **Custom filters can be added here, as well as additional information that should be shown, such as length of stay or age**
+    
+    Returns:
+        Renders the encounter_list.html template
+    """
     if COHORT is None:
         return redirect(url_for("index"))
     app.logger.info(f"Rendering encounter list for cohort {COHORT}")
@@ -129,12 +182,22 @@ def encounter_list():
 
 @app.route('/set_filters', methods=['POST'])
 def set_filters():
+    """Currently not used."""
     global FILTERS
     FILTERS = []
     return redirect(url_for("index"))
 
 @app.route('/encounter/<id>', methods=['POST', 'GET'])
 def route_encounter(id):
+    """Flask Route for "/encounter/<id>".
+    
+    *Redirects to the index page for cohort selection if no cohort is currently selected.*
+    
+    **Custom plots for individual encounters can be added here. Custom computations can be executed on encounter level here as well.**
+    
+    Returns:
+        Renders the encounter.html template
+    """
     if COHORT is None:
         return redirect(url_for("index"))
     e = [e for e in DATALOADER.processed if e.id == int(id)][0]
