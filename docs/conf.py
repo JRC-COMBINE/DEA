@@ -1,6 +1,7 @@
 import os
 import sys
-sys.path.insert(0, os.path.abspath(os.path.join('..', 'dea')))
+#sys.path.insert(0, os.path.abspath(os.path.join('..', 'dea')))
+sys.path.append(os.path.join(os.path.dirname(__name__), '..'))
 
 # Configuration file for the Sphinx documentation builder.
 #
@@ -23,7 +24,12 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
+    'sphinx.ext.napoleon',
 ]
+
+napoleon_google_docstring = False
+napoleon_use_param = False
+napoleon_use_ivar = True
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']

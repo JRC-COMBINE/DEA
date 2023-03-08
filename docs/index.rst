@@ -1,21 +1,23 @@
-Welcome to Diagnostic Expert Advisor's documentation!
-=====================================================
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-   source/usage
-   source/modules
+.. include:: readme.rst
 
 .. note::
 
-   This project is under active development.
+   This project is under active development. Currently progressing towards 1.0 release, mostly focussing on documentation and tidying up.
 
 
-Indices and tables
-==================
+Further Reading
+---------------
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. toctree::
+   :maxdepth: 1
+
+   readme
+
+   usage/installation
+   usage/quickstart
+   usage/datatypes
+   usage/filters
+   usage/visualization
+   usage/documentation
+
+   source/dea
