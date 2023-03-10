@@ -1,5 +1,6 @@
 import os
 import sys
+sys.path.insert(0, os.path.join(os.path.dirname((os.path.abspath('.')) # readthedocs path
 sys.path.insert(0, os.path.abspath("../../dea/"))
 
 # Configuration file for the Sphinx documentation builder.
