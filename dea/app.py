@@ -33,7 +33,7 @@ try:
         app.logger.info(f" - {c}")
 except:
     available_cohorts = []
-    app.logger.warning("No cohorts found! Place some in data/!")"
+    app.logger.warning("No cohorts found! Place some in data/!")
 
 
 @app.route('/')
