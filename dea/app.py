@@ -26,7 +26,7 @@ app.config.from_mapping(
     SECRET_KEY='dev'
 )
 app.logger.info("Scanning for available cohorts...")
-Path("data").mkdir(exist_ok=True)
+Path("data/").mkdir(exist_ok=True)
 available_cohorts = [str(c) for c in Path(os.path.dirname(__file__)+"/data").iterdir() if c.suffix == ".joblib"]
 app.logger.info("Found the following cohorts:")
 for c in available_cohorts:
