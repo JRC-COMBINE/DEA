@@ -1,6 +1,6 @@
 import os
 import sys
-sys.path.insert(0, os.path.abspath("../dea/"))
+sys.path.insert(0, os.path.abspath("../../dea/"))
 
 # Configuration file for the Sphinx documentation builder.
 #
