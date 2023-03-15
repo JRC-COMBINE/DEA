@@ -34,7 +34,7 @@ napoleon_google_docstring = True
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
-autodoc_mock_imports = ["joblib", "numpy", "pandas", "flask", "bokeh", "tqdm"]
+autodoc_mock_imports = ["joblib", "numpy", "pandas", "flask", "bokeh", "tqdm", "rich"]
 
 
 # -- Options for HTML output -------------------------------------------------
