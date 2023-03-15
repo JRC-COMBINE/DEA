@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from flask import Flask, flash, redirect, render_template, request, url_for
-from tqdm import tqdm
+from dea.cohort import Cohort
 import logging
 from bokeh.plotting import figure
 from bokeh.resources import CDN
