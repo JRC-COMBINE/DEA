@@ -1,7 +1,15 @@
 Module API Documentation 
 ========================
 
-This module contains all functionality related to the flask web server, thus all hooks are placed here.
+.. automodule:: dea.encounter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. automodule:: dea.cohort
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 .. automodule:: dea.app
    :members:
