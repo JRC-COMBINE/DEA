@@ -47,7 +47,7 @@ if __name__ == "__main__":
         end_of_stay = random.randint(100, len(simulated-1))
         simulated = simulated.iloc[:end_of_stay, :]
         simulated.index = pd.TimedeltaIndex(simulated.index, unit="h")
-        simulated.to_csv(f"../tests/data/dynamic/{i}.csv")
+        simulated.to_csv(f"../tests/data/{i}/dynamic.csv")
 
 
 

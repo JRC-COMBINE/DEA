@@ -1,4 +1,8 @@
+from __future__ import annotations
+
+import logging
 import pandas as pd
+from pathlib import Path
 from dataclasses import dataclass
 
 @dataclass
@@ -8,49 +12,30 @@ class Encounter:
     This basically stores all relevant information for a single visit of a patient to the hospital.
     You can add more fields if you need them, but make sure to update the save and load methods."""
 
-    id: int  # unique identifier
-    hospital: int  # hospital identifier, if we are dealing with multiple hospitals
-    dynamic: pd.DataFrame   # dynamic data
-    static: pd.DataFrame # static data
+    id: int
+    dynamic: pd.DataFrame
+    static: pd.DataFrame
+
+    def preprocess(self):
+        """Preprocessing is executed at loadtime and should be used to get the data in workable format.
+        This includes mostly resampling, filtering and datatype fixing that can not or should not be saved in the source data."""
+        self.dynamic.index = pd.to_timedelta(self.dynamic.index, unit="m")
+        self.dynamic = self.dynamic.resample("1h").mean()
+        self.dynamic.ffill(inplace=True)
+        self.dynamic.fillna(-1, inplace=True)
 
     def save(self, path):
         """Saves the encounter to disk.
         Extend this methods for every information you want store at the encounter level.
         Usually this method is called through the :meth:`dea.cohort.Cohort.save` method."""
-        self.dynamic.to_csv(path / f"dynamic.csv") # save dynamic data
-
-    def to_states(self, window_width=4, horizon=8):
-        """Calculates the states for the encounter."""
-        states = []
-        hwc = self.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"]
-        for i in range(window_width, len(hwc) - horizon - window_width):
-            hw0 = hwc[i - window_width : i]
-            hw1 = hwc[i + horizon - 1 : i + horizon + window_width - 1]
-
-            if hw0.isna().all():  # skip the state
-                continue
-
-            di = hw0.median() - hw1.median()
-
-            if di == 0:  # skip the state
-                label = 0
-
-            if hw0.isna().any() or di == 0:
-                label = 1
-            elif hw0.mean() > 450 and di > 100:  # we copy label 2
-                label = 1
-            elif hw0.mean() > 350 and di > 60:
-                label = 1
-            elif hw0.mean() > 250 and hw1.mean() < 200:
-                label = 1
-            elif hw0.mean() > 150 and hw1.mean() < 100:
-                label = 1
+        self.dynamic.to_csv(path / f"dynamic.csv")
+    
+    @staticmethod
+    def from_path(path: Path, static: pd.DataFrame) -> Encounter:
+        """Loads the encounter from disk. Reads every csv file in the passed folder and adds it to the encounter."""
+        for f in path.glob("*.csv"):
+            if f.name == "dynamic.csv":
+                dynamic = pd.read_csv(f)
             else:
-                label = 0
-
-            s = self.dynamic.iloc[
-                i - window_width : i, :
-            ].mean()  # drop label (and delta, if it were stored)
-            s["label"] = label
-            states.append(s)
-        return states
+                logging.warning("Unknown file %s. Implement the loading routine in Encounter.from_path.", f)
+        return Encounter(int(path.stem), dynamic, static.loc[int(path.stem)])

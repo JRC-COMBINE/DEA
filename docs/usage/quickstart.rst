@@ -14,13 +14,25 @@ As the setup can be quite complicated and some prerequisits need to be met, we u
 You can find the data in the `tests/data` folder.
 
 First of all we need to convert the csv files into our encounter format. The cohort class conveniently can be used for that.
-For simplicity we save the cohort as a joblib file. This is a compressed pickle file and can be loaded with the ``load`` function.
-If interfacing with other tools is needed, the cohort can also be saved as collection of csv files per encounter instead by providing a directory to the save method.
+For our testdata they are already organized as cohort/encounter/data.csv, so we can just pass the root folder to the cohorts load method.
 
 .. code-block:: python
 
-    coh = Cohort("tests/data")
-    coh.save("data/testcohort.joblib")
+    from dea.cohort import Cohort
+    coh = Cohort.from_path("../tests/data")
+    coh.save("data/test")
+
+Alternatively you can create your Encounters manually and add them to the cohort.
+
+.. code-block:: python
+
+    from dea.cohort import Cohort
+    coh = Cohort()
+    for my_data in my_data_source:
+        e = Encounter(my_data.id, extract_dynamic_data(my_data), static_data_mapping[my_data.id])
+        coh.encounters.append(e)
+    coh.static = weird_format_to_df(static_data_mapping)
+    coh.save("data/test")
 
 With the data prepared we can now launch the DEA and start interacting with our cohort.
 

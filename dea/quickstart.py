@@ -1,4 +1,3 @@
 from dea.cohort import Cohort
-coh = Cohort("../tests/data")
-coh.process()
-coh.save("data/test.joblib")
+coh = Cohort.from_path("../tests/data")
+coh.save("data/test")
