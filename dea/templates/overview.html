@@ -19,35 +19,16 @@
     <div class="bg-light p-5 rounded-lg m-3">
         <h1 class="display-4">Cohort Overview </h1>
         <h4>
-            {% if DATALOADER.processed|length %}<span class="badge bg-success">Processed</span>{% endif %}
-            {% if DATALOADER.states|length %}<span class="badge bg-primary">States Calculated</span>{% endif %}
+            {% if COHORT.processed|length %}<span class="badge bg-success">Processed</span>{% endif %}
         </h4>
         <div class="row">
             <div class="col-8">
                 <table class="table">
                     <tbody>
+                        {% if COHORT.encounters is not none %}
                         <tr>
-                            <th scope="row">Source File :</th>
-                            <td>{{COHORT}}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Limit Size:</th>
-                            <td>{{DATALOADER.limit_size}}</td>
-                        </tr>
-                        {% if DATALOADER.required_los is not none %}
-                        <tr>
-                            <th scope="row">Required LOS:</th>
-                            <td>{{DATALOADER.required_los}}</td>
-                        </tr>
-                        {% endif %}
-                        <tr>
-                            <th scope="row">Source</th>
-                            <td>{{DATALOADER.source}}</td>
-                        </tr>
-                        {% if DATALOADER.filter_hospitals is not none %}
-                        <tr>
-                            <th scope="row">Hospital Filter:</th>
-                            <td>{{DATALOADER.filter_hospitals}}</td>
+                            <th scope="row">Encounters in Cohort:</th>
+                            <td>{{COHORT.encounters|length}}</td>
                         </tr>
                         {% endif %}
                     </tbody>
@@ -55,15 +36,15 @@
             </div>
             <div class="col">
                 <div class="d-grid gap-2 ">
-                    <a href="/process" class="btn {% if DATALOADER.processed|length %} btn-outline-success {% else %} btn-success {% endif %}">Process</a>
-                    <a href="/calculate_states" class="btn {% if DATALOADER.states|length %} btn-outline-primary {% else %} btn-primary {% endif %}">Calculate States</a>
+                    <a href="/process" class="btn {% if COHORT.processed|length %} btn-outline-success {% else %} btn-success {% endif %}">Process</a>
+                    <a href="/" class="btn btn-primary">Custom Process</a>
                     <a href="/encounter_list" class="btn btn-info">Show Encounters</a>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                A total of <b>{{DATALOADER.processed|length}}</b> encounters were recorded. </br>
+                A total of <b>{{COHORT.encounters|length}}</b> encounters were recorded. </br>
                 The median Length of Stay (LOS) was <b>{{LOS}}</b>.
             </div>
             <div class="col">

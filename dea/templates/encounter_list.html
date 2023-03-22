@@ -26,7 +26,7 @@
                         </div>
                         {% for f in FILTERS%}
                         <div class="col-1">
-                            <input type="checkbox" class="btn-check btn-fill" id="{{f}}" name="{{f}}" {% if 'ards_label_available' is in filters %} checked {%endif%} autocomplete="off">
+                            <input type="checkbox" class="btn-check btn-fill" id="{{f}}" name="{{f}}" {% if f in ACTIVE_FILTERS %} checked {% endif %} autocomplete="off">
                             <label class="btn btn-outline-primary" for="{{f}}">{{f}}</label>
                         </div>
                         {% endfor %}
@@ -38,7 +38,7 @@
             </div>
         </form>
         <div id="encounters" class="list-group">
-            {% for e in DATALOADER.processed %}
+            {% for e in COHORT.encounters %}
             <a href="/encounter/{{e.id}}" class="list-group-item list-group-item-action" aria-current="true">
                 <div class="d-flex justify-content-between">
                 <h5 class="mb-1">Encounter {{e.id}}</h5>

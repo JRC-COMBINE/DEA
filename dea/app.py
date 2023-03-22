@@ -4,7 +4,7 @@
 from time import sleep
 
 import os
-import joblib
+from datetime import datetime
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -19,7 +19,17 @@ from bokeh.models import ColumnDataSource, HoverTool
 logging.basicConfig(level=logging.INFO)
 
 COHORT = None
-DATALOADER = None
+
+def filter_short_stay(e):
+    """Filter encounters with a length of stay of less than 3 days"""
+    if e.dynamic.index[-1] < pd.Timedelta(days=3):
+        return True
+    return False
+
+ACTIVE_FILTERS = []
+FILTERS = {
+    "Short Stay": filter_short_stay
+}
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_mapping(
@@ -27,7 +37,7 @@ app.config.from_mapping(
 )
 app.logger.info("Scanning for available cohorts...")
 try:
-    available_cohorts = [str(c) for c in Path(os.path.dirname(__file__)+"/data").iterdir() if c.suffix == ".joblib"]
+    available_cohorts = [str(c) for c in Path(os.path.dirname(__file__)+"/data").iterdir() if c.is_dir()]
     app.logger.info("Found the following cohorts:")
     for c in available_cohorts:
         app.logger.info(f" - {c}")
@@ -54,15 +64,15 @@ def set_cohort():
     
     Run when a cohort is selected either on the starting page, or later on through the menu.  
     
-    Internally changes the COHORT and loads the relevant data into DATALOADER.
+    Internally changes the COHORT and loads the relevant data into COHORT.
     
     Returns:
         Redirects to /overview
     """
-    global COHORT, DATALOADER
-    COHORT = request.form["cohort"]
-    app.logger.info(f"Set cohort to {COHORT}")
-    DATALOADER = joblib.load(f"{COHORT}")
+    global COHORT
+    cohort_choice = request.form["cohort"]
+    app.logger.info(f"Set cohort to {cohort_choice}")
+    COHORT = Cohort.from_path(cohort_choice)
     return redirect(url_for("overview"))
 
 @app.route('/search', methods=['POST'])
@@ -92,25 +102,8 @@ def process():
     if COHORT is None:
         return redirect(url_for("index"))
     app.logger.info(f"Processing cohort {COHORT}")
-    DATALOADER.process()
+    COHORT.process()
     flash("Processing finished.", "alert-success")
-    return redirect(url_for("overview"))
-
-@app.route('/calculate_states')
-def calculate_states():
-    """Flask Route for "/calculate_states".
-    
-    Runs the create_states method on all encounters in the dataloader.
-    
-    Returns:
-        Redirects to /overview once complete.
-    """
-    if COHORT is None:
-        return redirect(url_for("index"))
-    app.logger.info(f"Calculating states for cohort {COHORT}")
-    features = ["Horowitz-Quotient_(ohne_Temp-Korrektur)", "individuelles_Tidalvolumen_pro_kg_idealem_Koerpergewicht", "AF_spontan", "AF", "PEEP", "Compliance", "SpO2", "PCT", "Leukozyten", "paCO2_(ohne_Temp-Korrektur)", "paO2_(ohne_Temp-Korrektur)", "FiO2"]
-    DATALOADER.create_states(4, 8, features)
-    flash("State calculation finished.", "alert-primary")
     return redirect(url_for("overview"))
 
 def plot_cohort_hist():
@@ -123,7 +116,7 @@ def plot_cohort_hist():
     p.yaxis.axis_label = 'Count'
 
     # Histogram
-    los_list = [e.dynamic.index[-1] for e in DATALOADER.processed]
+    los_list = [e.dynamic.index[-1] for e in COHORT.encounters]
     los_h = [xi/np.timedelta64(1, 'h') for xi in los_list]  # convert to hours
     arr_hist, edges = np.histogram(los_h, bins="auto")
 
@@ -161,10 +154,10 @@ def overview():
     if COHORT is None:
         return redirect(url_for("index"))
     app.logger.info(f"Rendering overview for cohort {COHORT}")
-    los_list = [e.dynamic.index[-1] for e in DATALOADER.processed]
+    los_list = [e.dynamic.index[-1] for e in COHORT.encounters]
     LOS = pd.Series(los_list).median()
     LOS = f"{LOS.days} days and {LOS.seconds // 3600} hours"
-    return render_template("overview.html", COHORT=COHORT, DATALOADER=DATALOADER, available_cohorts=available_cohorts, LOS=LOS, los_plot=plot_cohort_hist())
+    return render_template("overview.html", COHORT=COHORT, available_cohorts=available_cohorts, LOS=LOS, los_plot=plot_cohort_hist())
 
 @app.route('/encounter_list')
 def encounter_list():
@@ -182,14 +175,32 @@ def encounter_list():
     if COHORT is None:
         return redirect(url_for("index"))
     app.logger.info(f"Rendering encounter list for cohort {COHORT}")
-    return render_template("encounter_list.html", COHORT=COHORT, DATALOADER=DATALOADER, FILTERS=list(range(4)))
+    filtered = COHORT
+    global ACTIVE_FILTERS
+    if ACTIVE_FILTERS is not None or len(ACTIVE_FILTERS) == 0:
+        filtered_encounters = []
+        for e in COHORT.encounters:
+            for filter_name in ACTIVE_FILTERS:
+                if not FILTERS[filter_name](e):
+                    break
+            else:
+                filtered_encounters.append(e)
+        c = Cohort()
+        c.encounters = filtered_encounters
+        c.static = COHORT.static
+    else:
+        c = COHORT
+    return render_template("encounter_list.html", COHORT=c, FILTERS=FILTERS, ACTIVE_FILTERS=ACTIVE_FILTERS)
 
 @app.route('/set_filters', methods=['POST'])
 def set_filters():
     """Currently not used."""
-    global FILTERS
-    FILTERS = []
-    return redirect(url_for("index"))
+    global ACTIVE_FILTERS
+    ACTIVE_FILTERS = []
+    for filter_name in FILTERS:
+        if request.form.get(filter_name) == "on":
+            ACTIVE_FILTERS.append(filter_name)
+    return redirect(url_for("encounter_list"))
 
 @app.route('/encounter/<id>', methods=['POST', 'GET'])
 def route_encounter(id):
@@ -204,7 +215,7 @@ def route_encounter(id):
     """
     if COHORT is None:
         return redirect(url_for("index"))
-    e = [e for e in DATALOADER.processed if e.id == int(id)][0]
+    e = [e for e in COHORT.encounters if e.id == int(id)][0]
     app.logger.info(f"Creating plots for encounter {e.id}")
 
     X = e.dynamic.index
