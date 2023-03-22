@@ -24,6 +24,7 @@ Clone the repository, setup the environment and start hacking away:
    $ cd DEA
    $ conda create --name dea --file requirements.txt
    $ conda activate dea
+   $ cd dea/
    $ flask run
 
 

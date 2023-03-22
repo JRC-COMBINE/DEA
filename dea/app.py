@@ -162,6 +162,7 @@ def overview():
         return redirect(url_for("index"))
     app.logger.info(f"Rendering overview for cohort {COHORT}")
     los_list = [e.dynamic.index[-1] for e in DATALOADER.processed]
+    print(los_list)
     LOS = pd.Series(los_list).median()
     LOS = f"{LOS.days} days and {LOS.seconds // 3600} hours"
     return render_template("overview.html", COHORT=COHORT, DATALOADER=DATALOADER, available_cohorts=available_cohorts, LOS=LOS, los_plot=plot_cohort_hist())

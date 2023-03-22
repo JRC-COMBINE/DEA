@@ -12,7 +12,7 @@ from dea.encounter import Encounter
 class Cohort:
     """Cohort class encompasses multiple encounters.."""
 
-    def __init__(self, path: str, filter_hospitals: List[int], limit_size: int = None, required_los: pd.Timedelta = None) -> None:
+    def __init__(self, path: str, filter_hospitals: List[int] = None, limit_size: int = None, required_los: pd.Timedelta = None) -> None:
         self.path = path
         self.limit_size = limit_size
         if limit_size is not None:
@@ -99,7 +99,7 @@ class Cohort:
     def process_single(self, f: Path) -> Encounter:
         """To be used with multiprocessing. Adds SL if available, labels ards and resamples. returns an Encounter object"""
         df = pd.read_csv(f, low_memory=False)
-        df = self.preprocess(df, "6h")
+        df = self.preprocess(df)
         if len(df) == 0:
             logging.debug("No data in %s. Skipping ...", f)
             return None
@@ -112,25 +112,30 @@ class Cohort:
             return Encounter(eid, self.path, hid, df, self.static[hid].loc[eid], self.comorbidities[hid].loc[eid])
         except KeyError:
             logging.warning("No static data and/or comorbidities for %s", f)
-            return None
+            return Encounter(eid, self.path, hid, df, None, None)
+    
+    def save(self, fname: str):
+        """Saves the processed data to a pickle file"""
+        import joblib
+        joblib.dump(self, fname)
 
     def load_files(self, dir, glob):
         """Loads files from a directory. Returns a list of paths."""
         files = []
-        logging.debug("Loading file list ...")
+        logging.info("Loading file list ...")
         for f in Path(dir).rglob(glob):
             if self.filter_hospitals is None or int(f.parent.parent.stem.split("_")[-1]) in self.filter_hospitals:
                 files.append(f)
             if self.limit_size is not None and len(files) >= self.limit_size:
                 break
-        logging.debug(f"Loaded {len(files)} files\tFilter: [{self.filter_hospitals}]")
+        logging.info(f"Loaded {len(files)} files\tFilter: [{self.filter_hospitals}]")
         return files
 
     def load_data(self) -> Tuple[pd.DataFrame, pd.DataFrame]:
         """Loads the data from the source and returns a tuple of dynamic and static data"""
         logging.debug("Loading data from %s", self.path)
-        dynamic = self.path + "/data"
-        dynamic = self.load_files(dynamic, "dynamic_filtered/*.csv")
+        dynamic = self.load_files(self.path, "dynamic/*.csv")
+        print(self.path)
         static = {}
         for f in (Path(self.path) / "features").rglob("personal.xlsx"):
             static[f.parent.stem] = pd.read_excel(f)
@@ -146,7 +151,6 @@ class Cohort:
     @staticmethod
     def preprocess(df, resample=None):
         """Preprocesses the data by removing unnecessary columns and resampling the data"""
-        df.set_index("Zeit_ab_Aufnahme", drop=True, inplace=True)
         df.index = pd.to_timedelta(df.index, unit="m")
         if resample is not None:
             df = df.resample(resample).mean()
