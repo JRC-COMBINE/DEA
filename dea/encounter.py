@@ -3,12 +3,21 @@ from dataclasses import dataclass
 
 @dataclass
 class Encounter:
-    id: int
-    source: str
-    hospital: int
-    dynamic: pd.DataFrame
-    static: pd.DataFrame
-    comorbidities: pd.DataFrame
+    """Encounter data class.
+
+    This basically stores all relevant information for a single visit of a patient to the hospital.
+    You can add more fields if you need them, but make sure to update the save and load methods."""
+
+    id: int  # unique identifier
+    hospital: int  # hospital identifier, if we are dealing with multiple hospitals
+    dynamic: pd.DataFrame   # dynamic data
+    static: pd.DataFrame # static data
+
+    def save(self, path):
+        """Saves the encounter to disk.
+        Extend this methods for every information you want store at the encounter level.
+        Usually this method is called through the :meth:`dea.cohort.Cohort.save` method."""
+        self.dynamic.to_csv(path / f"dynamic.csv") # save dynamic data
 
     def to_states(self, window_width=4, horizon=8):
         """Calculates the states for the encounter."""

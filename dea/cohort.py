@@ -147,6 +147,9 @@ class Cohort:
                 if "encounterid" in comorbidities[f.parent.stem].columns:
                     comorbidities[f.parent.stem].set_index("encounterid", inplace=True)
         return dynamic, static, comorbidities
+    
+    def save(self):
+        raise NotImplementedError
 
     @staticmethod
     def preprocess(df, resample=None):
