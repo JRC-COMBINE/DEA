@@ -25,10 +25,14 @@
             <div class="col-8">
                 <table class="table">
                     <tbody>
-                        {% if COHORT.encounters is not none %}
                         <tr>
                             <th scope="row">Encounters in Cohort:</th>
                             <td>{{COHORT.encounters|length}}</td>
+                        </tr>
+                        {% if COHORT.encounters is not none %}  <!-- This is just an example for jinja template conditioning -->
+                        <tr>
+                            <th scope="row">Encounters Processed:</th>
+                            <td>{{COHORT.get_processed()|length}}</td>
                         </tr>
                         {% endif %}
                     </tbody>

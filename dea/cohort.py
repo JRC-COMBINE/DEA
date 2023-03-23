@@ -12,6 +12,10 @@ class Cohort:
         """Initializes the cohort."""
         self.encounters: List[Encounter] = []
         self.static: pd.DataFrame = None
+    
+    def get_processed(self) -> pd.DataFrame:
+        """Returns all encounters that have already been processed."""
+        return [e.processed for e in self.encounters if e.processed is not None]
 
     @staticmethod
     def from_path(path: str) -> Cohort:
@@ -26,6 +30,12 @@ class Cohort:
             else:
                 pass # load other cohort level information here
         return cohort
+    
+    def process(self):
+        """This methods executes :meth:`dea.encounter.Encounter.process` on all encounters in the cohort."""
+        logging.debug("Processing cohort ...")
+        for e in self.encounters:
+            e.process()
     
     def save(self, path: str):
         """Saves the cohort to csv folder structure.
