@@ -23,8 +23,8 @@ class Encounter:
     def preprocess(self):
         """Preprocessing is executed at loadtime and should be used to get the data in workable format.
         This includes mostly resampling, filtering and datatype fixing that can not or should not be saved in the source data."""
-        self.dynamic.reset_index(inplace=True)
-        self.dynamic.index = pd.to_timedelta(self.dynamic.index, unit="m")
+        self.dynamic.reset_index(inplace=True, drop=True)
+        self.dynamic.index = pd.to_timedelta(self.dynamic.index, unit="h")
         self.dynamic = self.dynamic.resample("1h").mean(numeric_only=True)
         self.dynamic.ffill(inplace=True)
         self.dynamic.fillna(-1, inplace=True)
@@ -34,12 +34,13 @@ class Encounter:
         This is the place to add your own code."""
         self.processed = self.dynamic.mean()
 
-    def save(self, path):
+    def save(self, path: Path):
         """Saves the encounter to disk.
         Extend this methods for every information you want store at the encounter level.
         Usually this method is called through the :meth:`dea.cohort.Cohort.save` method."""
         self.dynamic.to_csv(path / f"dynamic.csv")
-        self.processed.to_csv(path / f"processed.csv")
+        if self.processed is not None:
+            self.processed.to_csv(path / f"processed.csv")
     
     @staticmethod
     def from_path(path: Path, static: pd.DataFrame) -> Encounter:

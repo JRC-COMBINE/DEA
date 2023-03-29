@@ -12,6 +12,10 @@ class Cohort:
         """Initializes the cohort."""
         self.encounters: List[Encounter] = []
         self.static: pd.DataFrame = None
+
+    @property
+    def processed(self):
+        return self.get_processed()
     
     def get_processed(self) -> pd.DataFrame:
         """Returns all encounters that have already been processed."""
@@ -36,6 +40,16 @@ class Cohort:
         logging.debug("Processing cohort ...")
         for e in self.encounters:
             e.process()
+    
+    def delete_processed(self):
+        """This method deletes all processed information from the encounters."""
+        logging.debug("Deleting processed data from cohort ...")
+        for e in self.encounters:
+            e.processed = None
+            processed_file = Path(f"{e.id}/processed.csv")
+            if processed_file.exists():
+                logging.debug(f"Removing file {e.id}/processed.csv")
+                processed_file.unlink()
     
     def save(self, path: str):
         """Saves the cohort to csv folder structure.

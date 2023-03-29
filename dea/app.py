@@ -19,6 +19,7 @@ from bokeh.models import ColumnDataSource, HoverTool
 logging.basicConfig(level=logging.INFO)
 
 COHORT = None
+COHORT_PATH = None
 
 def filter_short_stay(e):
     """Filter encounters with a length of stay of less than 3 days"""
@@ -69,10 +70,10 @@ def set_cohort():
     Returns:
         Redirects to /overview
     """
-    global COHORT
-    cohort_choice = request.form["cohort"]
-    app.logger.info(f"Set cohort to {cohort_choice}")
-    COHORT = Cohort.from_path(cohort_choice)
+    global COHORT, COHORT_PATH
+    COHORT_PATH = request.form["cohort"]
+    app.logger.info(f"Set cohort to {COHORT_PATH}")
+    COHORT = Cohort.from_path(COHORT_PATH)
     return redirect(url_for("overview"))
 
 @app.route('/search', methods=['POST'])
@@ -97,12 +98,24 @@ def search():
         flash(f"Invalid query. Could not find encounter: {query}", "alert-secondary")
         return redirect(url_for("overview"))
 
+@app.route('/delete_processed')
+def delete_processed():
+    global COHORT, COHORT_PATH
+    if COHORT is None:
+        return redirect(url_for("index"))
+    app.logger.info(f"Deleting processed files for cohort {COHORT}")
+    COHORT.delete_processed()
+    flash("Processed files deleted.", "alert-success")
+    return redirect(url_for("overview"))
+
 @app.route('/process')
 def process():
+    global COHORT, COHORT_PATH
     if COHORT is None:
         return redirect(url_for("index"))
     app.logger.info(f"Processing cohort {COHORT}")
     COHORT.process()
+    COHORT.save(COHORT_PATH)
     flash("Processing finished.", "alert-success")
     return redirect(url_for("overview"))
 
@@ -117,12 +130,34 @@ def process_encounter(id):
     Returns:
         Redirects to /encounter/<id>
     """
+    global COHORT, COHORT_PATH
     if COHORT is None:
         return redirect(url_for("index"))
     e = [e for e in COHORT.encounters if e.id == int(id)][0]
     app.logger.info(f"Processing encounter {e.id}")
     e.process()
+    e.save(Path(COHORT_PATH)/f"{e.id}")
     flash(f"Encounter {e.id} processed.", "alert-success")
+    return redirect(url_for(f"encounter_list"))
+
+@app.route('/delete/<int:id>', methods=['POST'])
+def delete_encounter(id):
+    """Flask Route for "/delete/<id>".
+    
+    *Redirects to the index page for cohort selection if no cohort is currently selected.*
+    
+    **Deletes an individual encounter.**
+    
+    Returns:
+        Redirects to /encounter_list
+    """
+    global COHORT, COHORT_PATH
+    if COHORT is None:
+        return redirect(url_for("index"))
+    e = [e for e in COHORT.encounters if e.id == int(id)][0]
+    app.logger.info(f"Deleting encounter {e.id}")
+    e.processed = None
+    flash(f"Processed data for encounter {e.id} deleted.", "alert-success")
     return redirect(url_for(f"encounter_list"))
 
 def plot_cohort_hist():
@@ -191,6 +226,7 @@ def encounter_list():
     Returns:
         Renders the encounter_list.html template
     """
+    global COHORT, COHORT_PATH
     if COHORT is None:
         return redirect(url_for("index"))
     app.logger.info(f"Rendering encounter list for cohort {COHORT}")

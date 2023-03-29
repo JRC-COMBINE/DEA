@@ -79,10 +79,13 @@
                 <div class="col-sm-2">
                     <div class="d-flex">
                         <form method="post" action="/encounter/{{e.id}}" style="margin-left: 1em;">
-                            <button type="sumbit" class="btn btn-sm btn-success">Show</button>
+                            <button type="sumbit" class="btn btn-sm btn-primary">Show</button>
                         </form>
                         <form method="post" action="/process/{{e.id}}" style="margin-left: 1em;">
-                            <button type="sumbit" class="btn btn-sm btn-primary">Process</button>
+                            <button type="sumbit" class="btn btn-sm {% if e.processed is not none %} btn-outline-success {% else %} btn-success {% endif %}">Process</button>
+                        </form>
+                        <form method="post" action="/delete/{{e.id}}" style="margin-left: 1em;">
+                            <button type="sumbit" class="btn btn-sm {% if e.processed is none %} btn-outline-danger {% else %} btn-danger {% endif %}">Delete Processed</button>
                         </form>
                 </div>
                 </div>
