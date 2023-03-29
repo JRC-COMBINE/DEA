@@ -8,10 +8,11 @@ from dea.encounter import Encounter
 class Cohort:
     """Cohort class encompasses multiple encounters.."""
 
-    def __init__(self):
+    def __init__(self, root: Path = None):
         """Initializes the cohort."""
         self.encounters: List[Encounter] = []
         self.static: pd.DataFrame = None
+        self.root = root
 
     @property
     def processed(self):
@@ -27,6 +28,7 @@ class Cohort:
         logging.debug("Loading cohort from %s", path)
         cohort = Cohort()
         cohort.encounters = []
+        cohort.root = path
         cohort.static = pd.read_csv(path+"/static.csv")
         for subdir in Path(path).rglob("*"):  # todo parallelize
             if subdir.is_dir():
@@ -41,25 +43,25 @@ class Cohort:
         for e in self.encounters:
             e.process()
     
-    def delete_processed(self):
-        """This method deletes all processed information from the encounters."""
-        logging.debug("Deleting processed data from cohort ...")
+    def delete_extra(self):
+        """This method deletes all extra information from the encounters."""
+        logging.debug("Deleting extra data from encounters ...")
         for e in self.encounters:
-            e.processed = None
-            processed_file = Path(f"{e.id}/processed.csv")
-            if processed_file.exists():
-                logging.debug(f"Removing file {e.id}/processed.csv")
-                processed_file.unlink()
+            e.delete_extra()
+        # also clean up additional files you created on cohort level here
     
-    def save(self, path: str):
+    def save(self, path:str  = None):
         """Saves the cohort to csv folder structure.
         Extend this method for every information you want store at the encounter level.
         This method additionally calls :meth:`dea.encounter.Encounter.save` on every encounter in the cohort."""
         logging.debug("Saving cohort ...")
+        if path is None and self.root is None:
+            raise ValueError("No path specified. Either define during cohort creation, or pass to save method.")
+        path = path if path is not None else self.root
         path = Path(path)
         path.mkdir(parents=True, exist_ok=True)
         self.static.to_csv(path/"static.csv")
-        for e in self.encounters:  # todo: parallelize
+        for e in self.encounters:
             Path(path/str(e.id)).mkdir(parents=True, exist_ok=True)
             e.save(Path(path) / str(e.id))
 

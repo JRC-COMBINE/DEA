@@ -2,8 +2,10 @@
 # -*- coding:utf-8 -*-
 
 from time import sleep
+import signal
 
 import os
+import sys
 from datetime import datetime
 from pathlib import Path
 import numpy as np
@@ -46,6 +48,15 @@ except:
     available_cohorts = []
     app.logger.warning("No cohorts found! Place some in data/!")
 
+def handle_shutdown(signum, frame):
+    app.logger.info("Shutting down...")
+    if COHORT is not None:
+        app.logger.info("Saving cohort...")
+        COHORT.save(COHORT_PATH)
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, handle_shutdown)
+
 
 @app.route('/')
 def index():
@@ -71,6 +82,9 @@ def set_cohort():
         Redirects to /overview
     """
     global COHORT, COHORT_PATH
+    if COHORT is not None:
+        app.logger.info("Saving old cohort...")
+        COHORT.save(COHORT_PATH)
     COHORT_PATH = request.form["cohort"]
     app.logger.info(f"Set cohort to {COHORT_PATH}")
     COHORT = Cohort.from_path(COHORT_PATH)
@@ -103,9 +117,9 @@ def delete_processed():
     global COHORT, COHORT_PATH
     if COHORT is None:
         return redirect(url_for("index"))
-    app.logger.info(f"Deleting processed files for cohort {COHORT}")
-    COHORT.delete_processed()
-    flash("Processed files deleted.", "alert-success")
+    app.logger.info(f"Deleting extra files for cohort {COHORT}")
+    COHORT.delete_extra()
+    flash("Extra files deleted.", "alert-success")
     return redirect(url_for("overview"))
 
 @app.route('/process')
@@ -146,7 +160,7 @@ def delete_encounter(id):
     
     *Redirects to the index page for cohort selection if no cohort is currently selected.*
     
-    **Deletes an individual encounter.**
+    **Deletes all extra data for an individual encounter.**
     
     Returns:
         Redirects to /encounter_list
@@ -156,7 +170,7 @@ def delete_encounter(id):
         return redirect(url_for("index"))
     e = [e for e in COHORT.encounters if e.id == int(id)][0]
     app.logger.info(f"Deleting encounter {e.id}")
-    e.processed = None
+    e.delete_extra()
     flash(f"Processed data for encounter {e.id} deleted.", "alert-success")
     return redirect(url_for(f"encounter_list"))
 
