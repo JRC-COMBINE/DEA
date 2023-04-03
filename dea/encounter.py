@@ -25,7 +25,7 @@ class Encounter:
         """Preprocessing is executed at loadtime and should be used to get the data in workable format.
         This includes mostly resampling, filtering and datatype fixing that can not or should not be saved in the source data."""
         self.dynamic.reset_index(inplace=True, drop=True)
-        self.dynamic.index = pd.to_timedelta(self.dynamic.index, unit="h")
+        self.dynamic.index = pd.to_timedelta(self.dynamic.index, unit="min")
         self.dynamic = self.dynamic.resample("1h").mean(numeric_only=True)
         self.dynamic.ffill(inplace=True)
         self.dynamic.fillna(-1, inplace=True)

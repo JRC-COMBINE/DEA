@@ -29,9 +29,23 @@ def filter_short_stay(e):
         return True
     return False
 
+def filter_severe_ards(e):
+    """Filter encounters with a Horovitz of less than 100"""
+    if e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].max() < 100:
+        return True
+    return False
+
+def filter_many_measurements(e):
+    """Filter encounters with more than 100 measurements"""
+    if len(e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].unique()) > 100:
+        return True
+    return False
+
 ACTIVE_FILTERS = []
 FILTERS = {
-    "Short Stay": filter_short_stay
+    "Short Stay": filter_short_stay,
+    "Severe ARDS": filter_severe_ards,
+    "Many Measurements": filter_many_measurements,
 }
 
 app = Flask(__name__, instance_relative_config=True)

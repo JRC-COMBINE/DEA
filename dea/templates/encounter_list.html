@@ -23,14 +23,15 @@
                     <div class="col">
                         <h2>Filters:</h2>
                     </div>
-                    {% for f in FILTERS%}
-                    <div class="col-1">
-                        <input type="checkbox" class="btn-check btn-fill" id="{{f}}" name="{{f}}" {% if f in
-                            ACTIVE_FILTERS %} checked {% endif %} autocomplete="off">
-                        <label class="btn btn-outline-primary" for="{{f}}">{{f}}</label>
-                    </div>
-                    {% endfor %}
-                    <div class="col-auto">
+                    <div class="d-flex">
+                        {% for f in FILTERS%}
+                        <div class="d-flex p-2">
+                            <input type="checkbox" class="btn-check btn-fill" id="{{f}}" name="{{f}}" {% if f in
+                                ACTIVE_FILTERS %} checked {% endif %} autocomplete="off">
+                            <label class="btn btn-outline-primary" for="{{f}}">{{f}}</label>
+                        </div>
+                        {% endfor %}
+                    <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-success">Apply</button>
                     </div>
                 </div>
