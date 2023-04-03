@@ -1,6 +1,8 @@
 from __future__ import annotations
 import logging
 import pandas as pd
+from rich.progress import track
+from multiprocessing import Pool, cpu_count
 from typing import List
 from pathlib import Path
 from dea.encounter import Encounter
@@ -30,11 +32,9 @@ class Cohort:
         cohort.encounters = []
         cohort.root = path
         cohort.static = pd.read_csv(path+"/static.csv")
-        for subdir in Path(path).rglob("*"):  # todo parallelize
-            if subdir.is_dir():
-                cohort.encounters.append(Encounter.from_path(subdir, cohort.static))
-            else:
-                pass # load other cohort level information here
+        dynamic_files = [f for f in Path(path).rglob("*") if f.is_dir()]
+        with Pool(cpu_count()) as p:
+            cohort.encounters = list(track(p.imap(Encounter.from_path_single, [(f, cohort.static) for f in dynamic_files]), description="Loading dynamic encounters", total=len(dynamic_files)))
         return cohort
     
     def process(self):

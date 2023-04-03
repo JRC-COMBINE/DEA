@@ -53,6 +53,12 @@ class Encounter:
         if self.processed is not None:
             self.processed.to_csv(path / f"processed.csv")
     
+
+    @staticmethod
+    def from_path_single(payload: tuple[Path, pd.DataFrame]) -> Encounter:
+        """Wrapper for the from_path method to be used with multiprocessing."""
+        return Encounter.from_path(payload[0], payload[1])
+    
     @staticmethod
     def from_path(path: Path, static: pd.DataFrame) -> Encounter:
         """Loads the encounter from disk. Reads every csv file in the passed folder and adds it to the encounter."""
