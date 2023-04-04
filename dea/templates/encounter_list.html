@@ -31,69 +31,83 @@
                             <label class="btn btn-outline-primary" for="{{f}}">{{f}}</label>
                         </div>
                         {% endfor %}
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-success">Apply</button>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-success">Apply</button>
+                        </div>
                     </div>
                 </div>
             </div>
-    </div>
-    </form>
-    <div id="encounters" class="list-group p-5">
-        <nav aria-label="Encounter List Navigation" class="ms-auto">
-            <ul class="pagination">
-                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item active disabled"><a class="page-link" href="#">1</a></li>
-                <li class="page-item disabled"><a class="page-link" href="#">2</a></li>
-                <li class="page-item disabled"><a class="page-link" href="#">3</a></li>
-                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-            </ul>
-        </nav>
-        {% for e in COHORT.encounters[:10]|sort(attribute='id') %}
-        <!-- this shoul not limit the list length while the pagination above is not implemented -->
-        <div class="list-group-item list-group-item-action" aria-current="true">
-            <div class="row">
-                <div class="col">
-                    <h5>Encounter {{e.id}}</h5>
-                </div>
-                <div class="col">
-                    {% if e.processed is not none %}
-                    <span class="badge bg-success p-1">processed</span>
+        </form>
+        <div id="encounters" class="list-group p-5">
+            <nav aria-label="Encounter List Navigation" class="ms-auto">
+                <ul class="pagination">
+                    {% if page > 1 %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page - 1 }}">Previous</a></li>
+                    {% else %}
+                        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
                     {% endif %}
-                </div>
-                <div class="col">
-                    <small>
-                        {% if e.dynamic.index[-1].days < 3 %}
-                        <span class="badge bg-primary">Short Stay</span>
+                    {% for p in range(1, (total // per_page) + 1) %}
+                    {% if p == page %}
+                        <li class="page-item active"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    {% if page < (total // per_page) + 1 %} <li class="page-item"><a class="page-link" href="?page={{ page + 1 }}">Next</a></li>
+                    {% else %}
+                        <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% for e in data %}
+            <!-- this shoul not limit the list length while the pagination above is not implemented -->
+            <div class="list-group-item list-group-item-action" aria-current="true">
+                <div class="row">
+                    <div class="col">
+                        <h5>Encounter {{e.id}}</h5>
+                    </div>
+                    <div class="col">
+                        {% if e.processed is not none %}
+                        <span class="badge bg-success p-1">processed</span>
                         {% endif %}
-                        {% if e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].min() < 100 %}
-                        <span class="badge bg-secondary"> Severe ARDS</span>
-                        {% elif e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].min() < 200 %}
-                        <span class="badge bg-secondary"> Moderate ARDS</span>
-                        {% elif e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].min() < 300 %}
-                        <span class="badge bg-secondary"> Mild ARDS</span>
-                        {% endif %}
-                        {% if e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].unique()|length > 100 %}
-                        <span class="badge bg-warning"> Many Measurements</span>
-                        {% endif %}
-                    </small>
-                </div>
-                <div class="col-sm-6">
-                    <div class="d-flex">
-                        <form method="post" action="/encounter/{{e.id}}" style="margin-left: 1em;">
-                            <button type="sumbit" class="btn btn-sm btn-primary">Show</button>
-                        </form>
-                        <form method="post" action="/process/{{e.id}}" style="margin-left: 1em;">
-                            <button type="sumbit" class="btn btn-sm {% if e.processed is not none %} btn-outline-success {% else %} btn-success {% endif %}">Process</button>
-                        </form>
-                        <form method="post" action="/delete/{{e.id}}" style="margin-left: 1em;">
-                            <button type="sumbit" class="btn btn-sm {% if e.processed is none %} btn-outline-danger {% else %} btn-danger {% endif %}">Delete Processed</button>
-                        </form>
-                </div>
+                    </div>
+                    <div class="col">
+                        <small>
+                            {% if e.dynamic.index[-1].days < 3 %} <span class="badge bg-primary">Short Stay</span>
+                                {% endif %}
+                                {% if e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].min() < 100 %} <span
+                                    class="badge bg-secondary"> Severe ARDS</span>
+                                    {% elif e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].min() < 200 %} <span
+                                        class="badge bg-secondary"> Moderate ARDS</span>
+                                        {% elif e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].min() < 300 %}
+                                            <span class="badge bg-secondary"> Mild ARDS</span>
+                                            {% endif %}
+                                            {% if e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].unique()|length >
+                                            100 %}
+                                            <span class="badge bg-warning"> Many Measurements</span>
+                                            {% endif %}
+                        </small>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex">
+                            <form method="post" action="/encounter/{{e.id}}" style="margin-left: 1em;">
+                                <button type="sumbit" class="btn btn-sm btn-primary">Show</button>
+                            </form>
+                            <form method="post" action="/process/{{e.id}}" style="margin-left: 1em;">
+                                <button type="sumbit"
+                                    class="btn btn-sm {% if e.processed is not none %} btn-outline-success {% else %} btn-success {% endif %}">Process</button>
+                            </form>
+                            <form method="post" action="/delete/{{e.id}}" style="margin-left: 1em;">
+                                <button type="sumbit"
+                                    class="btn btn-sm {% if e.processed is none %} btn-outline-danger {% else %} btn-danger {% endif %}">Delete
+                                    Processed</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
     </div>
 
     <!-- JavaScript Bundle with Popper -->

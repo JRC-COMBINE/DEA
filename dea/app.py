@@ -273,7 +273,13 @@ def encounter_list():
         c.static = COHORT.static
     else:
         c = COHORT
-    return render_template("encounter_list.html", COHORT=c, FILTERS=sorted(FILTERS), ACTIVE_FILTERS=sorted(ACTIVE_FILTERS))
+    page = int(request.args.get('page', 1))
+    per_page = 10
+    start = (page - 1) * per_page
+    end = start + per_page
+    sorted_cohort = sorted(c.encounters, key=lambda x: x.id)
+    data = sorted_cohort[start:end]
+    return render_template("encounter_list.html", data=data, total=len(c.encounters), page=page, per_page=per_page, COHORT=c, FILTERS=sorted(FILTERS), ACTIVE_FILTERS=sorted(ACTIVE_FILTERS))
 
 @app.route('/set_filters', methods=['POST'])
 def set_filters():
