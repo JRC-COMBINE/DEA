@@ -39,26 +39,6 @@
             </div>
         </form>
         <div id="encounters" class="list-group p-5">
-            <nav aria-label="Encounter List Navigation" class="ms-auto">
-                <ul class="pagination">
-                    {% if page > 1 %}
-                        <li class="page-item"><a class="page-link" href="?page={{ page - 1 }}">Previous</a></li>
-                    {% else %}
-                        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    {% endif %}
-                    {% for p in range(1, (total // per_page) + 1) %}
-                    {% if p == page %}
-                        <li class="page-item active"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
-                    {% else %}
-                        <li class="page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
-                    {% endif %}
-                    {% endfor %}
-                    {% if page < (total // per_page) + 1 %} <li class="page-item"><a class="page-link" href="?page={{ page + 1 }}">Next</a></li>
-                    {% else %}
-                        <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
             {% for e in data %}
             <!-- this shoul not limit the list length while the pagination above is not implemented -->
             <div class="list-group-item list-group-item-action" aria-current="true">
@@ -107,6 +87,30 @@
                 </div>
             </div>
             {% endfor %}
+        </div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <nav aria-label="Encounter List Navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="text-center page-item col-1 {% if page == 1 %} disabled {% endif %}"><a class="page-link" href="?page=1">First</a></li>
+                        <li class="text-center page-item col-1 {% if page == 1 %} disabled {% endif %} "><a class="page-link" href="?page={{ page - 1 }}">Previous</a></li>
+
+                        <div class="col-4 d-flex justify-content-center">
+                            {% for p in range([page - 2, 1] | max, [page + 2, (total // per_page)] | min + 1 ) %}
+                            {% if p == page %}
+                            <li class="text-center page-item active"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                            {% else %}
+                            <li class="text-center page-item"><a class="page-link" href="?page={{ p }}">{{ p }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        
+                        <li class="text-center page-item col-1 {% if page == (total // per_page)%} disabled {% endif %}"><a class="page-link" href="?page={{ page + 1 }}">Next</a></li>
+                        <li class="text-center page-item col-1 {% if page == (total // per_page)%} disabled {% endif %}"><a class="page-link" href="?page={{ (total // per_page)}}">Last</a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 
