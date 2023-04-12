@@ -6,12 +6,12 @@ import signal
 
 import os
 import sys
-from datetime import datetime
 from pathlib import Path
 import numpy as np
 import pandas as pd
 from flask import Flask, flash, redirect, render_template, request, url_for
 from dea.cohort import Cohort
+from dea.slurmbinder import SlurmBinder
 import logging
 from bokeh.plotting import figure
 from bokeh.resources import CDN
@@ -47,6 +47,14 @@ FILTERS = {
     "Severe ARDS": filter_severe_ards,
     "Many Measurements": filter_many_measurements,
 }
+
+SLURMBINDER = SlurmBinder(
+    "/home/ec92388/slurm/DEA/output",
+    "/home/ec92388/slurm/DEA/error",
+    "2-00:00:00",
+    "2GB",
+    "jrc_combine"
+)
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_mapping(
@@ -101,7 +109,7 @@ def set_cohort():
         COHORT.save(COHORT_PATH)
     COHORT_PATH = request.form["cohort"]
     app.logger.info(f"Set cohort to {COHORT_PATH}")
-    COHORT = Cohort.from_path(COHORT_PATH)
+    COHORT = Cohort.from_path(COHORT_PATH, SLURMBINDER)
     return redirect(url_for("overview"))
 
 @app.route('/search', methods=['POST'])

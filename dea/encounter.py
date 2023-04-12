@@ -40,6 +40,17 @@ class Encounter:
         """This method is called after the cohort is loaded and can be used to calculate additional information.
         This is the place to add your own code."""
         self.processed = self.dynamic.mean()
+    
+    def pickle(self, path: Path = None):
+        """Saves the encounter to disk as pickle file. Used for HPC interaction mostly."""
+        if path is None and self.root is None:
+            raise ValueError("No path specified. Either define during encounter creation, or pass to save method.")
+        path = path if path is not None else self.root
+        path = Path(path)
+        path.mkdir(parents=True, exist_ok=True)
+        path = path / f"encounter.pkl"
+        import joblib
+        joblib.dump(self, path)
 
     def save(self, path: Path = None):
         """Saves the encounter to disk.
@@ -53,7 +64,6 @@ class Encounter:
         if self.processed is not None:
             self.processed.to_csv(path / f"processed.csv")
     
-
     @staticmethod
     def from_path_single(payload: tuple[Path, pd.DataFrame]) -> Encounter:
         """Wrapper for the from_path method to be used with multiprocessing."""

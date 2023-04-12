@@ -10,11 +10,12 @@ from dea.encounter import Encounter
 class Cohort:
     """Cohort class encompasses multiple encounters.."""
 
-    def __init__(self, root: Path = None):
+    def __init__(self, root: Path = None, hpc_bridge=None):
         """Initializes the cohort."""
         self.encounters: List[Encounter] = []
         self.static: pd.DataFrame = None
         self.root = root
+        self.hpc_bridge = hpc_bridge
 
     @property
     def processed(self):
@@ -25,10 +26,11 @@ class Cohort:
         return [e.processed for e in self.encounters if e.processed is not None]
 
     @staticmethod
-    def from_path(path: str) -> Cohort:
+    def from_path(path: str, hpc_bridge = None) -> Cohort:
         """Loads the data from the source and stores all information found."""
         logging.debug("Loading cohort from %s", path)
         cohort = Cohort()
+        cohort.hpc_bridge = hpc_bridge
         cohort.encounters = []
         cohort.root = path
         cohort.static = pd.read_csv(path+"/static.csv")
@@ -40,8 +42,12 @@ class Cohort:
     def process(self):
         """This methods executes :meth:`dea.encounter.Encounter.process` on all encounters in the cohort."""
         logging.debug("Processing cohort ...")
-        for e in self.encounters:
-            e.process()
+        if self.hpc_bridge is None:
+            for e in self.encounters:  # TODO: Parallelize
+                e.process()
+        else:
+            self.hpc_bridge.arrayjob(self.encounters, "process")
+
     
     def delete_extra(self):
         """This method deletes all extra information from the encounters."""
