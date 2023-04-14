@@ -1,4 +1,5 @@
 from __future__ import annotations
+import subprocess
 from string import Template
 from dea.encounter import Encounter
 from pathlib import Path
@@ -53,6 +54,7 @@ class SlurmBinder():
         })
         logging.debug(f"Running Jobscript {name}")
         Path("jobscript.temp.sh").write_text(template)
-        #output = subprocess.check_output(["sbatch", "jobscript.temp.sh"])
-        #logging.debug(output)
+        output = subprocess.check_output(["sbatch", "jobscript.temp.sh"])
+        logging.debug(output)
         logging.debug("... done")
+        return output

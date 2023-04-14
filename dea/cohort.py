@@ -40,13 +40,20 @@ class Cohort:
         return cohort
     
     def process(self):
-        """This methods executes :meth:`dea.encounter.Encounter.process` on all encounters in the cohort."""
+        """This methods executes :meth:`dea.encounter.Encounter.process` on all encounters in the cohort.
+        If a hpc_bridge is defined, it will be used to query the jobs for HPC.
+        Returns a message for the DEA Interface to be displayed.
+        """
         logging.debug("Processing cohort ...")
         if self.hpc_bridge is None:
             for e in self.encounters:  # TODO: Parallelize
                 e.process()
-        else:
-            self.hpc_bridge.arrayjob(self.encounters, "process")
+            self.save()
+            return "Cohort Processed."
+        else:            
+            msg = self.hpc_bridge.arrayjob(self.encounters, "process")
+            return msg
+            #return "Processing queued with HPC Controller. Refresh (top menu) to check for results!"
 
     
     def delete_extra(self):

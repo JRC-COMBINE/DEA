@@ -92,6 +92,16 @@ def index():
     """
     return render_template("index.html", available_cohorts=available_cohorts)
 
+@app.route('/reload', methods=['GET'])
+def reload():
+    """Reloads the cohort. Useful for fetching updates from the HPC calculations."""
+    global COHORT, COHORT_PATH
+    if COHORT is None:
+        return redirect(url_for("index"))
+    flash("Cohort Reloaded.", "alert-info")
+    COHORT = Cohort.from_path(COHORT_PATH, SLURMBINDER)
+    return redirect(url_for("overview"))
+
 @app.route('/set_cohort', methods=['POST'])
 def set_cohort():
     """Flask Route for "/set_cohort".
@@ -150,9 +160,8 @@ def process():
     if COHORT is None:
         return redirect(url_for("index"))
     app.logger.info(f"Processing cohort {COHORT}")
-    COHORT.process()
-    COHORT.save(COHORT_PATH)
-    flash("Processing finished.", "alert-success")
+    msg = COHORT.process()
+    flash(msg, "alert-success")
     return redirect(url_for("overview"))
 
 @app.route('/process/<int:id>', methods=['POST'])
