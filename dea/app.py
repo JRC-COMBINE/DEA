@@ -27,23 +27,17 @@ COHORT_PATH = None
 
 def filter_short_stay(e):
     """Filter encounters with a length of stay of less than 3 days"""
-    if e.dynamic.index[-1] < pd.Timedelta(days=3):
-        return True
-    return False
+    return e.dynamic.index[-1] < pd.Timedelta(days=3)
 
 
 def filter_severe_ards(e):
     """Filter encounters with a Horovitz of less than 100"""
-    if e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].max() < 100:
-        return True
-    return False
+    return e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].max() < 100
 
 
 def filter_many_measurements(e):
     """Filter encounters with more than 100 measurements"""
-    if len(e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].unique()) > 100:
-        return True
-    return False
+    return len(e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].unique()) > 100
 
 
 ACTIVE_FILTERS = []
