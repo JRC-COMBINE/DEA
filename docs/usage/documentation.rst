@@ -8,3 +8,5 @@ To update the documentation run
 sphinx-apidoc -o source/ ../dea  
 from the docs folder
 
+To test the documentation locally run
+sphinx-build -a docs /tmp/dea-docs
