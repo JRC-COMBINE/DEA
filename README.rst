@@ -5,6 +5,8 @@ Diagnostic Expert Advisor
 
 .. |pyversion| image:: https://img.shields.io/badge/python-v3.10.9-blue?style=for-the-badge&logo=python
 .. |docs| image:: https://img.shields.io/readthedocs/diagnostic-expert-advisor?style=for-the-badge
+.. |coverage| image:: https://img.shields.io/codecov/c/github/JRC-COMBINE/DEA?style=for-the-badge
+.. |commit| image:: https://img.shields.io/github/last-commit/jrc-combine/dea?style=for-the-badge
 .. |license| image:: https://img.shields.io/github/license/jrc-combine/dea?style=for-the-badge
 
 The **D**\ iagnostric **E**\ xpert **A**\ dvisor is a lightweight toolkit to enable medical researches to quickly get started with their work. 
@@ -26,6 +28,7 @@ Clone the repository, setup the environment and start hacking away:
    $ conda activate dea
    $ cd dea/
    $ flask run
+   $ #flask --debug run --host 0.0.0.0 -- port 5005
 
 
 Where do I start?

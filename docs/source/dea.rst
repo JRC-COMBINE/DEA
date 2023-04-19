@@ -1,5 +1,5 @@
-Module API Documentation 
-========================
+API Reference
+=============
 
 .. automodule:: dea.encounter
    :members:

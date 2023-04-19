@@ -27,6 +27,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
+    'sphinx.ext.coverage',
 ]
 
 napoleon_google_docstring = True
@@ -35,7 +36,7 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 autodoc_mock_imports = ["joblib", "numpy", "pandas", "flask", "bokeh", "tqdm", "rich"]
-
+coverage_show_missing_items = True
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

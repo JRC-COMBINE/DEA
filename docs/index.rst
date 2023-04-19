@@ -9,12 +9,11 @@ Further Reading
 ---------------
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    usage/quickstart
    usage/filestructure
    usage/filters
    usage/visualization
    usage/contributing
-
    source/dea
