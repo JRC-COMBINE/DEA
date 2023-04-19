@@ -1,13 +1,12 @@
 Diagnostic Expert Advisor
 =========================
 
-|pyversion| |docs| |license|
+|pyversion| |docs| |license| |black|
 
-.. |pyversion| image:: https://img.shields.io/badge/python-v3.10.9-blue?style=for-the-badge&logo=python
-.. |docs| image:: https://img.shields.io/readthedocs/diagnostic-expert-advisor?style=for-the-badge
-.. |coverage| image:: https://img.shields.io/codecov/c/github/JRC-COMBINE/DEA?style=for-the-badge
-.. |commit| image:: https://img.shields.io/github/last-commit/jrc-combine/dea?style=for-the-badge
-.. |license| image:: https://img.shields.io/github/license/jrc-combine/dea?style=for-the-badge
+.. |pyversion| image:: https://img.shields.io/badge/python-v3.10.9-blue
+.. |docs| image:: https://img.shields.io/readthedocs/diagnostic-expert-advisor
+.. |license| image:: https://img.shields.io/github/license/jrc-combine/dea
+.. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
 
 The **D**\ iagnostric **E**\ xpert **A**\ dvisor is a lightweight toolkit to enable medical researches to quickly get started with their work. 
 It is based on `Flask`_ and written purely in Python.  
