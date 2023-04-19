@@ -11,12 +11,10 @@ Further Reading
 .. toctree::
    :maxdepth: 1
 
-   readme
-
    usage/quickstart
    usage/filestructure
    usage/filters
    usage/visualization
-   usage/documentation
+   usage/contributing
 
    source/dea
