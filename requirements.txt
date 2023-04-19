@@ -1,5 +1,4 @@
 bokeh==3.0.3
-dea_tools==0.2.7
 Flask==2.2.3
 joblib==1.2.0
 numpy==1.24.2
