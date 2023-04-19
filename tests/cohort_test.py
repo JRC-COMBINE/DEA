@@ -17,5 +17,5 @@ def test_loaded_static(c):
     assert c.static.shape[1] > 0
 
 def test_processing(c):
-    c.process()
+    c.process(False)
     assert len(c.processed) > 0
