@@ -1,12 +1,13 @@
 Diagnostic Expert Advisor
 =========================
 
-|pyversion| |docs| |license| |black|
+|workflow| |pyversion| |docs| |license| |black|
 
 .. |pyversion| image:: https://img.shields.io/badge/python-v3.10.9-blue
 .. |docs| image:: https://img.shields.io/readthedocs/diagnostic-expert-advisor
 .. |license| image:: https://img.shields.io/github/license/jrc-combine/dea
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+.. |workflow| image:: https://github.com/JRC-COMBINE/DEA/actions/workflows/python-app.yml/badge.svg?branch=main
 
 The **D**\ iagnostric **E**\ xpert **A**\ dvisor is a lightweight toolkit to enable medical researchers to quickly get started with their work. 
 It is based on `Flask`_ and written purely in Python.  
