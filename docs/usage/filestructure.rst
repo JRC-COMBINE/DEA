@@ -1,7 +1,5 @@
-Datatypes
-=========
-
->> this should probably be moved somewhere else
+File Structure
+==============
 
 The datastructure for csv files is as follows:
 

@@ -13,9 +13,8 @@ Further Reading
 
    readme
 
-   usage/installation
    usage/quickstart
-   usage/datatypes
+   usage/filestructure
    usage/filters
    usage/visualization
    usage/documentation
