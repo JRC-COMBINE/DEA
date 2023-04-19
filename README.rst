@@ -8,7 +8,7 @@ Diagnostic Expert Advisor
 .. |license| image:: https://img.shields.io/github/license/jrc-combine/dea
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
 
-The **D**\ iagnostric **E**\ xpert **A**\ dvisor is a lightweight toolkit to enable medical researches to quickly get started with their work. 
+The **D**\ iagnostric **E**\ xpert **A**\ dvisor is a lightweight toolkit to enable medical researchers to quickly get started with their work. 
 It is based on `Flask`_ and written purely in Python.  
 
 .. image:: https://raw.githubusercontent.com/JRC-COMBINE/DEA/2cb2fa289e91d9aceae809ac30f624f8cb7968c1/img/cohort_overview.png
