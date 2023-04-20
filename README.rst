@@ -10,10 +10,18 @@ Diagnostic Expert Advisor
 .. |workflow| image:: https://github.com/JRC-COMBINE/DEA/actions/workflows/python-app.yml/badge.svg
 
 The **D**\ iagnostric **E**\ xpert **A**\ dvisor is a lightweight toolkit to enable medical researchers to quickly get started with their work. 
-It is based on `Flask`_ and written purely in Python.  
 
 .. image:: https://raw.githubusercontent.com/JRC-COMBINE/DEA/2cb2fa289e91d9aceae809ac30f624f8cb7968c1/img/cohort_overview.png
 .. _flask: https://github.com/pallets/flask
+
+DEA provides the tooling to rapidly launch into data exploration, model development and HPC processing. It is based on `Flask`_, one of the most popular Python web application frameworks and works with all your favorite data science tools. By default the DEA provides 
+
+- Intuitive Dataset Structuring
+- Easy HPC Interfacing
+and
+- Customizable Visualization
+
+While DEA offers suggestions, it does not enforce the use of any specific structures, layouts or libraries and researchers can decide themselves which tools best fit the job.
 
 Installing
 ----------
