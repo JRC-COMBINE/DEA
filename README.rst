@@ -16,9 +16,8 @@ The **D**\ iagnostric **E**\ xpert **A**\ dvisor is a lightweight toolkit to ena
 
 DEA provides the tooling to rapidly launch into data exploration, model development and HPC processing. It is based on `Flask`_, one of the most popular Python web application frameworks and works with all your favorite data science tools. By default the DEA provides 
 
-- Intuitive Dataset Structuring
-- Easy HPC Interfacing
-and
+- Intuitive Dataset Structuring,
+- Easy HPC Interfacing and
 - Customizable Visualization
 
 While DEA offers suggestions, it does not enforce the use of any specific structures, layouts or libraries and researchers can decide themselves which tools best fit the job.
