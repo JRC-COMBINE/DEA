@@ -20,7 +20,7 @@ This repository provides the tooling to rapidly launch into data exploration, mo
 - Easy HPC Interfacing and
 - Customizable Visualization
 
-While DEA offers suggestions, it does not enforce the use of any specific structures, layouts or libraries and researchers can decide themselves which tools best fit the job.
+While the DEA offers suggestions, it does not enforce the use of any specific structures, layouts or libraries and researchers can decide themselves which tools best fit the job.
 
 Installing
 ----------
