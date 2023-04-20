@@ -6,7 +6,6 @@ from multiprocessing import Pool, cpu_count
 from typing import List
 from pathlib import Path
 from dea.encounter import Encounter
-from werkzeug.utils import secure_filename
 
 
 class Cohort:
@@ -35,7 +34,7 @@ class Cohort:
         cohort.hpc_bridge = hpc_bridge
         cohort.encounters = []
         cohort.root = path
-        cohort.static = pd.read_csv(secure_filename(path + "/static.csv"))
+        cohort.static = pd.read_csv(path + "/static.csv")
         dynamic_files = [f for f in Path(path).rglob("*") if f.is_dir()]
         with Pool(cpu_count()) as p:
             cohort.encounters = list(
@@ -85,12 +84,12 @@ class Cohort:
                 "No path specified. Either define during cohort creation, or pass to save method."
             )
         path = path if path is not None else self.root
-        path = secure_filename(path)
+        path = path
         path = Path(path)
         path.mkdir(parents=True, exist_ok=True)
         self.static.to_csv(path / "static.csv")
         for e in self.encounters:
-            secure_filename(Path(path / str(e.id))).mkdir(parents=True, exist_ok=True)
+            Path(path / str(e.id)).mkdir(parents=True, exist_ok=True)
             e.save(Path(path) / str(e.id))
 
     def preprocess(self):
