@@ -50,7 +50,9 @@ First you want to create DataLoaders from your data sources. An example script c
 Contributing
 ------------
 
-If you want to contribute to the DEA, please fork the repository and create a pull request.
+If you want to contribute to the DEA, please reference our `contribution guidelines`
+
+.. _contribution guidelines: https://diagnostic-expert-advisor.readthedocs.io/en/latest/contributing.html
 
 Links
 -----
