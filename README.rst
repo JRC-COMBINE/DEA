@@ -14,7 +14,7 @@ The **D**\ iagnostric **E**\ xpert **A**\ dvisor is a lightweight toolkit to ena
 .. image:: https://raw.githubusercontent.com/JRC-COMBINE/DEA/2cb2fa289e91d9aceae809ac30f624f8cb7968c1/img/cohort_overview.png
 .. _flask: https://github.com/pallets/flask
 
-DEA provides the tooling to rapidly launch into data exploration, model development and HPC processing. It is based on `Flask`_, one of the most popular Python web application frameworks and works with all your favorite data science tools. By default the DEA provides 
+This repository provides the tooling to rapidly launch into data exploration, model development and HPC processing. It is based on `Flask`_, one of the most popular Python web application frameworks and works with all your favorite data science tools. By default the DEA provides 
 
 - Intuitive Dataset Structuring,
 - Easy HPC Interfacing and
