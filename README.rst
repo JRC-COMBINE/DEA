@@ -66,7 +66,7 @@ First of all you need to get your data into the DEA format. Luckily this is just
 Contributing
 ------------
 
-If you want to contribute to the DEA, please reference our `contribution guidelines`
+If you want to contribute to the DEA, please reference our `contribution guidelines`_
 
 .. _contribution guidelines: https://diagnostic-expert-advisor.readthedocs.io/en/latest/contributing.html
 
