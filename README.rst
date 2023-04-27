@@ -40,7 +40,8 @@ Optionally download sample data:
 
    $ cd tests
    $ wget https://github.com/JRC-COMBINE/DEA/releases/download/v0.1.0-alpha/testdata.zip
-   $ unzip testdata.zip
+   $ unzip testdata.zip  # data is located in DEA/tests/data, feel free to explore the structure!
+   $ python quickstart.py # generate a cohort from the test data into DEA/data
 
 Finally start the Flask server:
 
