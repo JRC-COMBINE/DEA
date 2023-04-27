@@ -48,7 +48,7 @@ Finally start the Flask server:
 
 .. code:: bash
 
-   $ cd ../dea/
+   $ cd dea
    $ flask run  # add --debug to update on code change.
 
 
