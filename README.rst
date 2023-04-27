@@ -25,7 +25,7 @@ While the DEA offers suggestions, it does not enforce the use of any specific st
 Installing
 ----------
 
-Clone the repository, setup the environment and start hacking away:
+Clone the repository and setup the environment:
 
 .. code:: bash
    
@@ -33,12 +33,21 @@ Clone the repository, setup the environment and start hacking away:
    $ cd DEA
    $ conda create --name dea --file requirements.txt
    $ conda activate dea
-   ...
-   Add your data to DEA/data. Follow the README to set up testdata.
-   ...
-   $ cd dea/
-   $ flask run
-   $ #flask --debug run --host 0.0.0.0 -- port 5005
+
+Optionally download sample data:
+
+.. code:: bash
+
+   $ cd tests
+   $ wget https://github.com/JRC-COMBINE/DEA/releases/download/v0.1.0-alpha/testdata.zip
+   $ unzip testdata.zip
+
+Finally start the Flask server:
+
+.. code:: bash
+
+   $ cd ../dea/
+   $ flask run  # add --debug to update on code change.
 
 
 Where do I start?
