@@ -33,6 +33,9 @@ Clone the repository, setup the environment and start hacking away:
    $ cd DEA
    $ conda create --name dea --file requirements.txt
    $ conda activate dea
+   ...
+   Add your data to DEA/data. Follow the README to set up testdata.
+   ...
    $ cd dea/
    $ flask run
    $ #flask --debug run --host 0.0.0.0 -- port 5005
