@@ -3,7 +3,7 @@ Diagnostic Expert Advisor
 
 |workflow| |pyversion| |docs| |license| |black|
 
-.. |pyversion| image:: https://img.shields.io/badge/python-v3.10.9-blue
+.. |pyversion| image:: https://img.shields.io/badge/python-v3.11.3-blue
 .. |docs| image:: https://img.shields.io/readthedocs/diagnostic-expert-advisor
 .. |license| image:: https://img.shields.io/github/license/jrc-combine/dea
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
