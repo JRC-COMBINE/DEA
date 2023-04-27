@@ -220,8 +220,8 @@ def plot_cohort_hist():
     """Plot a histogram of the cohort's length of stay"""
 
     p = figure(
-        plot_width=800,
-        plot_height=400,
+        outer_width=800,
+        outer_height=400,
         sizing_mode="scale_width",
         toolbar_location=None,
     )
@@ -377,8 +377,8 @@ def route_encounter(id):
         "FiO2",
     ]
     p = figure(
-        plot_width=800,
-        plot_height=400,
+        outer_width=800,
+        outer_height=400,
         x_axis_type="datetime",
         title="Horowitz Relevant Parameters",
         sizing_mode="scale_width",
