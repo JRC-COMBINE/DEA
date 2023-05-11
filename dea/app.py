@@ -27,12 +27,12 @@ COHORT_PATH = None
 
 def filter_short_stay(e):
     """Filter encounters with a length of stay of less than 3 days"""
-    return e.dynamic.index[-1] < pd.Timedelta(days=3)
+    return e.dynamic.index[-1].days < 3
 
 
 def filter_severe_ards(e):
     """Filter encounters with a Horovitz of less than 100"""
-    return e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].max() < 100
+    return e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].min() < 100
 
 
 def filter_many_measurements(e):
@@ -60,16 +60,16 @@ app = Flask(__name__, instance_relative_config=True)
 app.config.from_mapping(SECRET_KEY="dev")
 app.logger.info("Scanning for available cohorts...")
 try:
-    available_cohorts = [
+    AVAILABLE_COHORTS = [
         str(c)
         for c in Path(os.path.dirname(__file__) + "/data").iterdir()
         if c.is_dir()
     ]
     app.logger.info("Found the following cohorts:")
-    for c in available_cohorts:
+    for c in AVAILABLE_COHORTS:
         app.logger.info(f" - {c}")
 except:
-    available_cohorts = []
+    AVAILABLE_COHORTS = []
     app.logger.warning("No cohorts found! Place some in data/!")
 
 
@@ -94,13 +94,14 @@ def index():
     Returns:
         Renders the index.html template
     """
-    return render_template("index.html", available_cohorts=available_cohorts)
+    global AVAILABLE_COHORTS
+    return render_template("index.html", available_cohorts=AVAILABLE_COHORTS)
 
 
 @app.route("/reload", methods=["GET"])
 def reload():
     """Reloads the cohort. Useful for fetching updates from the HPC calculations."""
-    global COHORT, COHORT_PATH
+    global COHORT, COHORT_PATH, AVAILABLE_COHORTS
     if COHORT is None:
         return redirect(url_for("index"))
     flash("Cohort Reloaded.", "alert-info")
@@ -119,7 +120,7 @@ def set_cohort():
     Returns:
         Redirects to /overview
     """
-    global COHORT, COHORT_PATH
+    global COHORT, COHORT_PATH, AVAILABLE_COHORTS
     if COHORT is not None:
         app.logger.info("Saving old cohort...")
         COHORT.save(COHORT_PATH)
@@ -154,7 +155,7 @@ def search():
 
 @app.route("/delete_processed")
 def delete_processed():
-    global COHORT, COHORT_PATH
+    global COHORT, COHORT_PATH, AVAILABLE_COHORTS
     if COHORT is None:
         return redirect(url_for("index"))
     app.logger.info(f"Deleting extra files for cohort {COHORT}")
@@ -165,7 +166,7 @@ def delete_processed():
 
 @app.route("/process")
 def process():
-    global COHORT, COHORT_PATH
+    global COHORT, COHORT_PATH, AVAILABLE_COHORTS
     if COHORT is None:
         return redirect(url_for("index"))
     app.logger.info(f"Processing cohort {COHORT}")
@@ -185,7 +186,7 @@ def process_encounter(id):
     Returns:
         Redirects to /encounter/<id>
     """
-    global COHORT, COHORT_PATH
+    global COHORT, COHORT_PATH, AVAILABLE_COHORTS
     if COHORT is None:
         return redirect(url_for("index"))
     e = [e for e in COHORT.encounters if e.id == int(id)][0]
@@ -207,7 +208,7 @@ def delete_encounter(id):
     Returns:
         Redirects to /encounter_list
     """
-    global COHORT, COHORT_PATH
+    global COHORT, COHORT_PATH, AVAILABLE_COHORTS
     if COHORT is None:
         return redirect(url_for("index"))
     e = [e for e in COHORT.encounters if e.id == int(id)][0]
@@ -221,8 +222,8 @@ def plot_cohort_hist():
     """Plot a histogram of the cohort's length of stay"""
 
     p = figure(
-        plot_width=800,
-        plot_height=400,
+        outer_width=800,
+        outer_height=400,
         sizing_mode="scale_width",
         toolbar_location=None,
     )
@@ -270,6 +271,8 @@ def overview():
     Returns:
         Renders the overview.html template
     """
+    global COHORT
+    global AVAILABLE_COHORTS
     if COHORT is None:
         return redirect(url_for("index"))
     app.logger.info(f"Rendering overview for cohort {COHORT}")
@@ -279,9 +282,9 @@ def overview():
     return render_template(
         "overview.html",
         COHORT=COHORT,
-        available_cohorts=available_cohorts,
         LOS=LOS,
         los_plot=plot_cohort_hist(),
+        available_cohorts=AVAILABLE_COHORTS
     )
 
 
@@ -298,7 +301,7 @@ def encounter_list():
     Returns:
         Renders the encounter_list.html template
     """
-    global COHORT, COHORT_PATH
+    global COHORT, COHORT_PATH, AVAILABLE_COHORTS
     if COHORT is None:
         return redirect(url_for("index"))
     app.logger.info(f"Rendering encounter list for cohort {COHORT}")
@@ -332,6 +335,7 @@ def encounter_list():
         COHORT=c,
         FILTERS=sorted(FILTERS),
         ACTIVE_FILTERS=sorted(ACTIVE_FILTERS),
+        available_cohorts=AVAILABLE_COHORTS
     )
 
 
@@ -357,6 +361,7 @@ def route_encounter(id):
     Returns:
         Renders the encounter.html template
     """
+    global COHORT, AVAILABLE_COHORTS
     if COHORT is None:
         return redirect(url_for("index"))
     e = [e for e in COHORT.encounters if e.id == int(id)][0]
@@ -378,8 +383,8 @@ def route_encounter(id):
         "FiO2",
     ]
     p = figure(
-        plot_width=800,
-        plot_height=400,
+        outer_width=800,
+        outer_height=400,
         x_axis_type="datetime",
         title="Horowitz Relevant Parameters",
         sizing_mode="scale_width",
@@ -401,4 +406,4 @@ def route_encounter(id):
 
     pygplot = pyg.walk(e.dynamic, return_html=True)
 
-    return render_template("encounter.html", e=e, plots=plots, pygplot=pygplot)
+    return render_template("encounter.html", e=e, plots=plots, pygplot=pygplot, available_cohorts=AVAILABLE_COHORTS)
