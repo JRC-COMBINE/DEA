@@ -53,19 +53,17 @@
                     </div>
                     <div class="col">
                         <small>
-                            {% if e.dynamic.index[-1].days < 3 %} <span class="badge bg-primary">Short Stay</span>
-                                {% endif %}
-                                {% if e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].min() < 100 %} <span
-                                    class="badge bg-secondary"> Severe ARDS</span>
-                                    {% elif e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].min() < 200 %} <span
-                                        class="badge bg-secondary"> Moderate ARDS</span>
-                                        {% elif e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].min() < 300 %}
-                                            <span class="badge bg-secondary"> Mild ARDS</span>
-                                            {% endif %}
-                                            {% if e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].unique()|length >
-                                            100 %}
-                                            <span class="badge bg-warning"> Many Measurements</span>
-                                            {% endif %}
+                            {% if e.dynamic.index[-1].days < 3 %} <span class="badge bg-primary">Short Stay</span>{% endif %}
+                            {% if e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].min() < 100 %} 
+                            <span class="badge bg-secondary"> Severe ARDS</span>
+                            {% elif e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].min() < 200 %}
+                             <span class="badge bg-secondary"> Moderate ARDS</span>
+                            {% elif e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].min() < 300 %}
+                            <span class="badge bg-secondary"> Mild ARDS</span>
+                            {% endif %}
+                            {% if e.dynamic["Horowitz-Quotient_(ohne_Temp-Korrektur)"].unique()|length > 100 %}
+                            <span class="badge bg-warning"> Many Measurements</span>
+                            {% endif %}
                         </small>
                     </div>
                     <div class="col-sm-6">
@@ -114,11 +112,7 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous">
-        </script>
+    {% include "footer.html" %}
 </body>
 
 </html>
