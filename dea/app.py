@@ -52,6 +52,7 @@ SLURMBINDER = SlurmBinder(
     "/home/ec92388/slurm/DEA/error",
     "2-00:00:00",
     "2GB",
+    "1",
     "jrc_combine",
 )
 

@@ -5,6 +5,7 @@
 #SBATCH --error=$root/logs/${jobname}_%A_%a.err
 #SBATCH --time=$time
 #SBATCH --mem=$mem
+#SBATCH --cpus-per-task=$mcpu
 #SBATCH --account=$account
 #SBATCH --array=$array
 

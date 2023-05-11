@@ -15,5 +15,6 @@ Further Reading
    usage/filestructure
    usage/filters
    usage/visualization
+   usage/hpc
    contributing
    source/dea

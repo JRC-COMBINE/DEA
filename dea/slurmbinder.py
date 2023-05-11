@@ -11,7 +11,7 @@ import logging
 class SlurmBinder:
     """This class holds information to pass onto every Slurm jobscript and provides methods for creating them."""
 
-    def __init__(self, slurm_output, slurm_error, slurm_time, slurm_mem, slurm_account):
+    def __init__(self, slurm_output, slurm_error, slurm_time, slurm_mem, slurm_cpu, slurm_account):
         """ "
         Parameters
         ----------
@@ -23,6 +23,8 @@ class SlurmBinder:
             The time limit for the job in the format DD-HH:MM:SS.
         slurm_mem : str
             The memory limit for the job, e.g. 2GB.
+        slurm_cpu : str
+            The number of cpu cores to use.
         slurm_account : str
             The account to charge the job to. This is usually your username.
         """
@@ -30,6 +32,7 @@ class SlurmBinder:
         self.slurm_error = slurm_error
         self.slurm_time = slurm_time
         self.slurm_mem = slurm_mem
+        self.slurm_cpu = slurm_cpu
         self.slurm_account = slurm_account
 
     def arrayjob(self, encounters: List[Encounter], func: str, name: str = None):
@@ -48,6 +51,7 @@ class SlurmBinder:
                 "errordir": self.slurm_error,
                 "time": self.slurm_time,
                 "mem": self.slurm_mem,
+                "cpu": self.slurm_cpu,
                 "account": self.slurm_account,
                 "loadpythonenv": "source /hpcwork/jrc_combine/richard/miniconda3/bin/activate dea",
                 "root": "/hpcwork/jrc_combine/richard/DEA",
