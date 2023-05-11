@@ -58,10 +58,10 @@ Where do I start?
 First of all you need to get your data into the DEA format. Luckily this is just a thin wrapper around Pandas DataFrames in the form of `encounters` and `cohorts`. You can think of `cohorts` as a list of `encounters`, with `encounters` being a single visit of a patient to the hospital. Such an `encounter` contains measurements over time (think heartrate) as well as static information (e.g. height) and some metadata. Once the data is in the correct format (or you adapted the DEA to your format), there is various ways to progress:
 
 * Explore individual Encounters using  `PyGWalker <https://github.com/Kanaries/pygwalker>`_, through a "Tableau-style User Interface for visual analysis"
-* Create custom visualizations and automate analysis for the whole cohort or individual encounters ( Go `here <https://diagnostic-expert-advisor.readthedocs.io/en/latest/usage/visualization.html>`_ )
+* Create custom visualizations and automate analysis for the whole cohort or individual encounters ( Go here: `Visualization <https://diagnostic-expert-advisor.readthedocs.io/en/latest/usage/visualization.html>`_ )
 * Run computationally expensive calculations in parallel on High-Performance Computing Infrastructure ( t.b.d )
 * Use your usual workflow to develop ML models and deploy them to the DEA ( t.b.d. ) 
-* Create customized filters to verify and test model behavior on specific groups of interest ( Go `here <https://diagnostic-expert-advisor.readthedocs.io/en/latest/usage/filters.html>`_ )
+* Create customized filters to verify and test model behavior on specific groups of interest ( Go here: `Filters <https://diagnostic-expert-advisor.readthedocs.io/en/latest/usage/filters.html>`_ )
 
 Contributing
 ------------

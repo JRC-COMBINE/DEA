@@ -21,6 +21,10 @@ class Cohort:
     @property
     def processed(self):
         return self.get_processed()
+    
+    def to_pandas(self) -> pd.DataFrame: # TODO: Implement Tests and version that adds static information at every timestep
+        """Returns a concatenated dataframe of the dynamic data of all encounters."""
+        return pd.concat([e.dynamic for e in self.encounters])
 
     def get_processed(self) -> pd.DataFrame:
         """Returns all encounters that have already been processed."""
