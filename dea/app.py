@@ -398,12 +398,13 @@ def route_encounter(id):
             color=Category20[len(features)][features.index(y)],
         )
     p.legend.click_policy = "mute"
+    p.legend.visible = False # disabled for few variables
     p_html_str = file_html(p, CDN)
 
     plots = [p_html_str]
 
     import pygwalker as pyg
 
-    pygplot = pyg.walk(e.dynamic, return_html=True)
+    pygplot = pyg.walk(e.dynamic, return_html=True, dark="light")
 
     return render_template("encounter.html", e=e, plots=plots, pygplot=pygplot, available_cohorts=AVAILABLE_COHORTS)
