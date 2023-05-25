@@ -49,7 +49,7 @@ With the data prepared we can now launch the DEA and start interacting with our 
 
 .. code-block:: bash
 
-    $ conda activate dea
+    $ conda activate dea  # activate conda environment, if you did not already do so before
     $ cd dea/
     $ flask run --debug  # this ensures changes to the code are reflected immediately
 
