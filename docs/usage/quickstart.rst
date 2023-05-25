@@ -11,7 +11,7 @@ To get started clone the DEA repository and setup a conda environment for its de
 
 You can use various sources for your data, for example from the `MIMIC-III dataset <https://physionet.org/content/mimiciii/1.4/>`_.
 For simplicities sake we provide testdata_ which can be used to get started quickly. 
-Place the data in :file:`dea/tests/data` and continue following this guide.
+Place the data in :file:`DEA/tests/data` and continue following this guide.
 
 .. _testdata: https://github.com/JRC-COMBINE/DEA/releases/download/v0.1.0-alpha/testdata.zip
 
