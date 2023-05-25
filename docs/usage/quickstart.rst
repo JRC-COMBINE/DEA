@@ -13,7 +13,7 @@ You can use various sources for your data, for example from the `MIMIC-III datas
 For simplicities sake we provide testdata_ which can be used to get started quickly. 
 Place the data in :file:`dea/tests/data` and continue following this guide.
 
-.. _testdata: https://github.com/jrc-combine/DEA [TODO: add link to testdata in git release artifacts]
+.. _testdata: https://github.com/JRC-COMBINE/DEA/releases/download/v0.1.0-alpha/testdata.zip
 
 First of all we need to convert the original data format into DEA encounters. The cohort class conveniently can be used for that.
 For our testdata they are already organized as cohort/encounter/data.csv, so we can just pass the root folder to the cohorts load method.
