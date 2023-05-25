@@ -4,5 +4,5 @@ joblib==1.2.0
 numpy==1.24.3
 pandas==2.0.0
 tqdm==4.65.0
-pygwalker==0.1.7
+pygwalker==0.1.8
 rich==12.5.1
