@@ -12,7 +12,6 @@ to address bugs and feature requests. Please just contact me directly:
 
 -   Via Mail: rpolzin@ukaachen.de
 -   On Keybase: https://keybase.io/deastiny
--   On Matrix: deastiny@deastiny.com
 -   Ask on our `GitHub Discussions`_ for long term discussion or larger
     questions.
 

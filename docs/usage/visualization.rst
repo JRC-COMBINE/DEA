@@ -3,10 +3,12 @@ Visualization
 
 Visualizations in the DEA can be build through any module that results in html-embeddable plots.  
 
-This could just be generated matplotlib file::`myplot.png` files, or it could be fancy interactive visualizations. The example show in file::`example.py` are created using `bokeh`_ for beautiful and customizable plots like this:
+This could just be generated matplotlib file::`myplot.png` files, or it could be fancy interactive visualizations. The default implementation uses`bokeh`_ for beautiful and customizable plots like this:
 
 .. image:: https://user-images.githubusercontent.com/1078448/190840954-dc243c99-9295-44de-88e9-fafd0f4f7f8a.jpg
 .. _bokeh: https://bokeh.org/
+
+(Image borrowed from the bokeh project site)
 
 Adding Visualizations
 ---------------------
