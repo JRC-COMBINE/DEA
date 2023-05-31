@@ -8,12 +8,13 @@ To get started clone the DEA repository and setup a conda environment for its de
    $ git clone git@github.com:JRC-COMBINE/DEA.git
    $ cd DEA
    $ conda create --name dea --file requirements.txt
+   $ conda activate dea # do not forget to work in the dea environment from now on!
 
 You can use various sources for your data, for example the `MIMIC-III dataset <https://physionet.org/content/mimiciii/1.4/>`_.
 For simplicities sake we provide testdata_ which can be used to get started quickly. 
-Place the data in :file:`dea/tests/data` and continue following this guide.
+Place the data in :file:`DEA/tests/data` and continue following this guide.
 
-.. _testdata: https://github.com/jrc-combine/DEA [TODO: add link to testdata in git release artifacts]
+.. _testdata: https://github.com/JRC-COMBINE/DEA/releases/download/v0.1.0-alpha/testdata.zip
 
 First of all we need to convert the original data format into DEA encounters. The cohort class conveniently can be used for that.
 For our testdata they are already organized as cohort/encounter/data.csv, so we can just pass the root folder to the cohorts load method.
@@ -23,6 +24,13 @@ For our testdata they are already organized as cohort/encounter/data.csv, so we 
     from dea.cohort import Cohort
     coh = Cohort.from_path("../tests/data")
     coh.save("data/test")
+
+The included :file:`quickstart.py` file includes exactly this code and can be run instead.
+
+
+.. code:: bash
+   
+   $ python quickstart.py
 
 Alternatively you can create your Encounters manually and add them to the cohort.
 
@@ -36,11 +44,12 @@ Alternatively you can create your Encounters manually and add them to the cohort
     coh.static = exotic_custom_format_to_df(static_data_mapping)
     coh.save("data/test")
 
+This will create a new directory in :file:`DEA/dea/data`. Here the DEA stores all intermediate results.
 With the data prepared we can now launch the DEA and start interacting with our cohort.
 
 .. code-block:: bash
 
-    $ conda activate dea
+    $ conda activate dea  # activate conda environment, if you did not already do so before
     $ cd dea/
     $ flask run --debug  # this ensures changes to the code are reflected immediately
 
