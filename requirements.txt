@@ -5,4 +5,4 @@ numpy==1.24.3
 pandas==2.0.1
 tqdm==4.65.0
 pygwalker==0.1.8
-rich==13.3.5
+rich==13.4.2
